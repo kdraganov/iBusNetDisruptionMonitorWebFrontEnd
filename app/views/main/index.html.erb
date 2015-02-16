@@ -1,0 +1,149 @@
+<%= stylesheet_link_tag "responsive-tables" %>
+<%= javascript_include_tag "responsive-tables" %>
+
+<div class="row">
+    <div class="large-12 columns">
+        <h1>Disruptions</h1>
+
+        <p style="font-size:0.8em;float:right;">
+            <i>Last refreshed: <span id="currentTime" style="font-weight:bold;"><%= @time %></span></i>
+
+        <p>
+
+        <table class="responsive" width="100%">
+            <thead>
+            <tr>
+                <th width="50">Route Number</th>
+                <th width="50">Direction</th>
+                <th>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">Section start</span>
+                </th>
+                <th>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">Section end</span>
+                </th>
+                <th width="80">
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) disruption time in minutes using feeds from the last 1 hour">Delay observed</span>
+                </th>
+                <th width="20">
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is increasing (<span style=color:#FF5468;>&#8593;</span>) and if it normalising (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">Trend</span>
+                </th>
+                <th width="100">
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first alerted for the disruption.">Alerted at</span>
+                </th>
+                <th width="40"></th>
+                <th width="40">
+                   <!-- <span data-tooltip aria-haspopup="true" class="has-tip" title="Ignore/hide disruption from table.">Hide</span>-->
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @disruptions.each do |disruption| %>
+                <tr>
+                    <td><a href ="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.direction %>" target="_blank"><%= disruption.route %></a></td>
+                    <td> <%= disruption.direction %></td>
+                    <!--<a href =" http://countdown.tfl.gov.uk/#%7CstopCode=%= disruption.startStopCode %>" target="_blank">%= disruption.startStop %></a>-->
+                    <td><%= disruption.startStop %></td>
+                    <td><%= disruption.endStop %></td>
+                    <td bgcolor="<%= disruption.disruptionColor %>"> <%= disruption.disruptionObserved %></td>
+                    <td>
+                        <span style="font-size:1.8em; color:<%= disruption.trendColor %>;"><%= raw(disruption.trendSymbol) %></span>
+                    </td>
+                    <td> <%= disruption.timeFirstDetected %></td>
+                    <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">More</a></td>
+                    <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+                </tr>
+            <% end %>
+            <!--
+            <tr>
+                <td>9</td>
+                <td>Picadilly Circus - Knightsbridge</td>
+                <td bgcolor="#CC3333">31mins</td>
+                <td><span style="font-size:1.8em; color:#FF5468;">&#8593;</span></td>
+                <td>16/1/2015 13:14:34</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>RV1</td>
+                <td>London Eye - The Hop Exchange</td>
+                <td bgcolor="#CC3333">30mins</td>
+                <td><span style="font-size:1.8em; color:#4DFA90;">&#8595;</span></td>
+                <td>16/1/2015 14:14:25</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>RV1</td>
+                <td>London Bridge Station - Oxo Tower</td>
+                <td bgcolor="#FABE4D">24mins</td>
+                <td><span style="font-size:1.8em; color:#FF5468;">&#8593;</span></td>
+                <td>16/1/2015 12:13:45</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>11</td>
+                <td>Markham Street - Westminster Cathedral</td>
+                <td bgcolor="#FABE4D">22mins</td>
+                <td><span style="font-size:1.8em; color:#FF5468;">&#8593;</span></td>
+                <td>16/1/2015 11:44:34</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>364</td>
+                <td>Coventry road - Green Lane</td>
+                <td bgcolor="#FABE4D">21mins</td>
+                <td><span style="font-size:1.8em; color:#4DFA90;">&#8595;</span></td>
+                <td>16/1/2015 12:12:34</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>72</td>
+                <td>Wulfstan Street - White City station</td>
+                <td bgcolor="#FABE4D">19mins</td>
+                <td><span style="font-size:1.8em; color:#FABE4D;">&#8597;</span></td>
+                <td>16/1/2015 14:14:24</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>210</td>
+                <td>Hornsey Rise - South Grove</td>
+                <td bgcolor="#FABE4D">17mins</td>
+                <td><span style="font-size:1.8em; color:#FABE4D;">&#8597;</span></td>
+                <td>16/1/2015 18:32:34</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>
+            <tr>
+                <td>375</td>
+                <td>Lawns Way - Havering Green</td>
+                <td bgcolor="#FABE4D">17mins</td>
+                <td><span style="font-size:1.8em; color:#4DFA90;">&#8595;</span></td>
+                <td>16/1/2015 01:14:34</td>
+                <td><a href="#" data-reveal-id="additionalInfoModal" class="button radius tiny">Show</a></td>
+                <td><a href="#" class="button radius tiny disabled">Hide</a></td>
+            </tr>-->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div id="additionalInfoModal" class="reveal-modal" data-reveal>
+    <h1>Details of disruption</h1>
+
+    <h3>[UNDER CONSTRUCTION ...]</h3>
+
+    <p>More information about the selected disruption can be displayed here. It can also include a map of some sort if
+        useful.
+        <!--<br/>
+        <img src="img/map.jpeg" alt="Map" align="middle">-->
+    </p>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<!--<script type="text/javascript">setTimeout("location.reload(true);", <= @refreshTimeout %>);</script>-->
+

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  route: MyString
+  direction: MyString
+  startStop: MyString
+  endStop: MyString
+  disruptionObserved: 1
+  trend: 1
+  timeFirstDetected: MyString
+
+two:
+  route: MyString
+  direction: MyString
+  startStop: MyString
+  endStop: MyString
+  disruptionObserved: 1
+  trend: 1
+  timeFirstDetected: MyString
