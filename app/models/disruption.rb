@@ -1,19 +1,33 @@
 class Disruption < ActiveRecord::Base
 
+  MEDIUM_THRESHOLD = 20
+  SERIOUS_THRESHOLD = 40
+  SEVERE_THRESHOLD = 60
+
   RED_COLOR = "#CC3333"
   YELLOW_COLOR = "#FFCC00"
   GREEN_COLOR = "#006633"
+  ORANGE_COLOR = "#FF6600"
 
   TREND_SYMBOL_POSITIVE = "&#8593;"
   TREND_SYMBOL_NEGATIVE = "&#8595;"
   TREND_SYMBOL_NEUTRAL = "&#8597;"
 
-  def disruptionColor
-    if (self.disruptionObserved > 40)
+  def totalDelayColor
+    if (self.routeTotalDelay > SEVERE_THRESHOLD)
       return RED_COLOR
-    else
-      return YELLOW_COLOR
     end
+    return YELLOW_COLOR
+  end
+
+  def delayColor
+    if (self.delay > SEVERE_THRESHOLD)
+      return RED_COLOR
+    end
+    if (self.delay > SERIOUS_THRESHOLD)
+      return ORANGE_COLOR
+    end
+    return YELLOW_COLOR
   end
 
   def trendColor

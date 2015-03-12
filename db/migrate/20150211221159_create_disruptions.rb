@@ -3,9 +3,12 @@ class CreateDisruptions < ActiveRecord::Migration
     create_table :disruptions do |t|
       t.string :route
       t.string :direction
-      t.string :startStop
-      t.string :endStop
-      t.integer :disruptionObserved
+      t.string :fromStopName
+      t.string :fromStopCode
+      t.string :toStopName
+      t.string :toStopCode
+      t.integer :delay
+      t.integer :routeTotalDelay
       t.integer :trend
       t.string :timeFirstDetected
 

@@ -16,13 +16,16 @@ ActiveRecord::Schema.define(version: 20150211221159) do
   create_table "disruptions", force: :cascade do |t|
     t.string   "route"
     t.string   "direction"
-    t.string   "startStop"
-    t.string   "endStop"
-    t.integer  "disruptionObserved"
+    t.string   "fromStopName"
+    t.string   "fromStopCode"
+    t.string   "toStopName"
+    t.string   "toStopCode"
+    t.integer  "delay"
+    t.integer  "routeTotalDelay"
     t.integer  "trend"
     t.string   "timeFirstDetected"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
 end
