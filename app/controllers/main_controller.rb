@@ -44,8 +44,8 @@ class MainController < ApplicationController
                                     :timeFirstDetected => row['TimeFirstDetected'])
     end
     #Order descending by disruption time observed
-    @disruptions = disruptions.sort_by { |a| [a.delay*-1, a.routeTotalDelay*-1, a.timeFirstDetected] }
-    @totalNumberOfDisruptions = disruptions.length
+    disruptions = disruptions.sort_by { |a| [a.delay*-1, a.routeTotalDelay*-1, a.timeFirstDetected] }
+    @disruptions = disruptions.paginate(:page => params[:page], :per_page => 20)
   end
 
 
