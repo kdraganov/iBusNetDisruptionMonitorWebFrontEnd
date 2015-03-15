@@ -24,5 +24,11 @@ function ajaxPollCall(version) {
 
         }
     });
+}
 
+function setSpeed(speed){
+    new $.ajax('/main/speed', {
+        method: 'get',
+        data: {speed: speed}
+    });
 }

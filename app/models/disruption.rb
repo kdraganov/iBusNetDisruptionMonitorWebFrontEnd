@@ -18,7 +18,10 @@ class Disruption < ActiveRecord::Base
     if (self.routeTotalDelay > SEVERE_THRESHOLD)
       return "severe"
     end
-    return "serious"
+    if (self.routeTotalDelay > SERIOUS_THRESHOLD)
+      return "serious"
+    end
+    return "medium"
   end
 
   def delayColor

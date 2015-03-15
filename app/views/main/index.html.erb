@@ -9,6 +9,16 @@
         <h1>Disruptions list</h1>
     </div>
 </div>
+
+<div class="row">
+    <div class="large-12 columns">
+        <a id="slow" href="#" onclick="setSpeed('slow')">Slow</a> |
+        <a id="normal" href="#" onclick="setSpeed('normal')">Normal</a> |
+        <a id="pause" href="#" onclick="setSpeed('pause')">Pause</a> |
+        <a id="fast" href="#" onclick="setSpeed('fast')">Fast</a>
+    </div>
+</div>
+
 <div id="disruptionList">
     <%= render 'disruptionList' %>
 </div>
@@ -16,6 +26,6 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
-        poll("<%= @version %>", 90000);
+        poll("<%= @version %>", <%= @timeout %>);
     });
 </script>
