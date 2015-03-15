@@ -8,4 +8,5 @@ module MainHelper
   def formatDatetimeStringWithDate(timeString)
     return Time.parse(timeString).strftime("%H:%M:%S %m/%d/%Y")
   end
+
 end

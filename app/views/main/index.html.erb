@@ -1,91 +1,21 @@
-<%= stylesheet_link_tag "responsive-tables" %>
-<%= javascript_include_tag "responsive-tables" %>
+<% content_for :header do %>
+    <%= stylesheet_link_tag "responsive-tables" %>
+    <%= javascript_include_tag "disruptionList" %>
+<% end %>
+
 
 <div class="row">
     <div class="large-12 columns">
-        <h1>Disruptions</h1>
+        <h1>Disruptions list</h1>
     </div>
 </div>
-<div class="row">
-    <div class="large-12 columns">
-         <span style="font-size:0.8em;float:left;">
-             Displaying <%= @disruptions.count %> out of <%= @totalNumberOfDisruptions %>
-         </span>
-        <span style="font-size:0.8em;float:right;">
-            <i>Last updated: <span id="currentTime" style="font-weight:bold;"><%= @time %></span></i>
-        </span>
-    </div>
-</div>
-<div class="row">
-    <div class="large-12 columns">
-        <table class="responsive" width="100%">
-            <thead>
-            <tr>
-                <th>Route</th>
-                <th>Direction</th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">From stop</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">To stop</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) disruption time in minutes using feeds from the last 2 hours.">Delay observed</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in minutes.">Total delay</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is increasing (<span style=color:#FF5468;>&#8593;</span>) and if it normalising (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">Trend</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first alerted for the disruption.">Alerted at</span>
-                </th>
-                <th></th>
-                <th>
-                    <!-- <span data-tooltip aria-haspopup="true" class="has-tip" title="Ignore/hide disruption from table.">Hide</span>-->
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @disruptions.each do |disruption| %>
-                <tr>
-                    <td>
-                        <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.direction %>" target="_blank"><%= disruption.route %></a>
-                    </td>
-                    <td> <%= disruption.direction %></td>
-                    <!--<a href =" http://countdown.tfl.gov.uk/#%7CstopCode=%= disruption.startStopCode %>" target="_blank">%= disruption.startStop %></a>-->
-                    <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStopCode %>" target="_blank"><%= disruption.fromStopName %></a>
-                    </td>
-                    <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.toStopCode %>" target="_blank"><%= disruption.toStopName %></a>
-                    </td>
-                    <td bgcolor="<%= disruption.delayColor %>"><%= disruption.delay %></td>
-                    <td bgcolor="<%= disruption.totalDelayColor %>"><%= disruption.routeTotalDelay %></td>
-                    <td>
-                        <span style="font-size:1.2em; color:<%= disruption.trendColor %>;"><%= raw(disruption.trendSymbol) %></span>
-                    </td>
-                    <td> <%= formatDatetimeString(disruption.timeFirstDetected) %></td>
-                    <td><a href="#" data-reveal-id="additionalInfoModal" class="tiny">More</a></td>
-                    <td><a href="#" class="tiny disabled">Hide</a></td>
-                </tr>
-            <% end %>
-            </tbody>
-        </table>
-    </div>
+<div id="disruptionList">
+    <%= render 'disruptionList' %>
 </div>
 
 
-<div id="additionalInfoModal" class="reveal-modal" data-reveal>
-    <h1>Details of disruption</h1>
-
-    <p>More detailed information about the selected disruption can be displayed here. </p>
-    <br/>
-    <%= image_tag "SampleMapOverview.png" %>
-    <!--<img src="/images/SampleStripMap.png" alt="Map" align="middle">-->
-    <a class="close-reveal-modal">&#215;</a>
-</div>
-
-<script type="text/javascript">setTimeout("location.reload(true);", <%= @refreshTimeout %>);</script>
-
+<script type="text/javascript">
+    $( document ).ready(function() {
+        poll("<%= @version %>", 90000);
+    });
+</script>

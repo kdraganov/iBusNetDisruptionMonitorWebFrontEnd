@@ -3,7 +3,7 @@
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( responsive-tables.css )
-Rails.application.config.assets.precompile += %w( responsive-tables.js )
+Rails.application.config.assets.precompile += %w( disruptionList.js )
 Rails.application.config.assets.precompile += %w( SampleStripMap.png )
 Rails.application.config.assets.precompile += %w( SampleMap.png )
 Rails.application.config.assets.precompile += %w( SampleMapOverview.png )
