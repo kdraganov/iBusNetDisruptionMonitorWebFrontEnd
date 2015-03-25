@@ -10,17 +10,17 @@ function poll(version, timeout) {
     }, timeout);
 }
 
-function ajaxPollCall(version) {
+function ajaxPollCall(lastUpdateTime) {
     new $.ajax('/main/view', {
         method: 'get',
-        data: {version: version},
+        data: {lastUpdateTime: lastUpdateTime},
         success: function (result) {
             if (result.update) {
                 $("#disruptionList").html(result.partial);
             } else {
-                $("#lastUpdateTime").html(result.time)
+                $("#lastUpdateTime").html(result.lastUpdateTime)
             }
-            poll(result.version, result.timeout)
+            poll(result.lastUpdateTime, result.timeout)
 
         }
     });

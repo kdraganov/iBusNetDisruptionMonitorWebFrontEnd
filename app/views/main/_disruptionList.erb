@@ -49,7 +49,6 @@
                         <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.getRunString %>" target="_blank"><%= disruption.route %></a>
                     </td>
                     <td> <%= disruption.getRunString %></td>
-                    <!--<a href =" http://countdown.tfl.gov.uk/#%7CstopCode=%= disruption.startStopCode %>" target="_blank">%= disruption.startStop %></a>-->
                     <td>
                         <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStop.code %>" target="_blank"><%= disruption.fromStop.name%></a>
                     </td>
@@ -61,7 +60,13 @@
                     <td class="trendCell <%= disruption.trendColor %>"><%= raw(disruption.trendSymbol) %>
                     </td>
                     <td> <%= disruption.getDetectedAt %></td>
-                    <td><a href="#" data-reveal-id="disruptionDetails" class="tiny">More</a></td>
+                    <td>
+                        <a href="<%= main_details_url(id: disruption.id) %>" data-reveal-id="disruptionDetails" data-reveal-ajax="true">
+                            More
+                        </a>
+                        <!--<=link_to 'More', :action => :details, :id => disruption.id, remote: true, reveal-id: "disruptionDetails", reveal-ajax: "true"%>
+                       <!-- <a href="#" data-reveal-id="disruptionDetails" class="tiny">More</a>-->
+                    </td>
                     <td><a href="id=<%=disruption.id%>" data-reveal-id="settingsModal" class="tiny disabled">Hide</a></td>
                 </tr>
             <% end %>
@@ -74,5 +79,3 @@
         <% end %>
     </div>
 </div>
-
-<%= render 'disruptionDetails' %>

@@ -12,17 +12,13 @@
     <%= render 'disruptionList' %>
 </div>
 
-<div class="row">
-    <div class="large-12 columns" style="font-size: 0.8em;text-align: right;font-weight: bold;">
-        <a id="slow" href="#" onclick="setSpeed('slow')">Slow</a> |
-        <a id="normal" href="#" onclick="setSpeed('normal')">Normal</a> |
-        <a id="pause" href="#" onclick="setSpeed('pause')">Pause</a> |
-        <a id="fast" href="#" onclick="setSpeed('fast')">Fast</a>
-    </div>
+<%= render 'engineSpeedControl' %>
+
+<div id="disruptionDetails" class="reveal-modal" data-reveal>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //poll("<= version %>", <= timeout %>);
+        poll("<%= @lastUpdateTime %>", <%= @timeout %>);
     });
 </script>

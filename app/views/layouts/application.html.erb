@@ -35,17 +35,20 @@
                 <section class="top-bar-section">
                     <ul class="right">
                         <li>
-                        <!--class="active"--><%= link_to "Home", controller: "main", action: "index" %></li>
-                        <li><a href="#">History</a></li>
+                            <!--class="active"--><%= link_to "Home", controller: "main", action: "index" %></li>
+                        <li><%= link_to "History", controller: "history", action: "index" %></li>
+                        <li><%= link_to "Settings", controller: "settings", action: "index" %></li>
+                        <!--
                         <li class="has-dropdown">
-                            <a href="#">Settings</a>
-                            <ul class="dropdown">
-                                <li><a href="#" data-reveal-id="settingsModal">General</a></li>
-                                <li><a href="#" data-reveal-id="settingsModal">User specific</a></li>
-                            </ul>
-                        </li>
-                        <!-- <li><a href="#">Settings</a></li>-->
+                             <a href="#">SettingsController</a>
+                             <ul class="dropdown">
+                                 <li><a href="#" data-reveal-id="loginModal">General</a></li>
+                                 <li><a href="#" data-reveal-id="loginModal">User specific</a></li>
+                             </ul>
+                         </li>
+                         -->
                         <li><%= link_to "About", controller: "main", action: "about" %></li>
+                        <li><a href="#" data-reveal-id="loginModal">Log in</a></li>
                         <!--
                         <li class="search">
                             <form>
@@ -98,7 +101,7 @@
 </footer>
 <!--END:Footer-->
 
-<div id="settingsModal" class="reveal-modal" data-reveal>
+<div id="loginModal" class="reveal-modal" data-reveal>
     <form>
         <fieldset>
             <legend><h2>Login</h2></legend>
