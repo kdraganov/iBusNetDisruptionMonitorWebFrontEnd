@@ -6,17 +6,17 @@
     </div>
     <div class="large-6 medium-6 small-6 columns">
         <span style="font-size:0.8em;float:right;">
-            <i>Last updated: <span id="lastUpdateTime" style="font-weight:bold;"><%= Time.new.strftime("%m/%d/%Y %H:%M:%S ") %></span></i>
+            <i>Last updated: <span id="lastUpdateTime" style="font-weight:bold;"><%= @lastUpdateTime %> </span></i>
         </span>
     </div>
 </div>
 
 <div class="row">
     <div class="large-12 columns">
-        <table class="responsive" width="100%">
+        <table class="" width="100%">
             <thead>
             <tr>
-                <th>Route</th>
+                <th width="20">Route</th>
                 <th>Direction</th>
                 <th>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">From stop</span>
@@ -46,23 +46,23 @@
             <% @disruptions.each do |disruption| %>
                 <tr>
                     <td>
-                        <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.direction %>" target="_blank"><%= disruption.route %></a>
+                        <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.getRunString %>" target="_blank"><%= disruption.route %></a>
                     </td>
-                    <td> <%= disruption.direction %></td>
+                    <td> <%= disruption.getRunString %></td>
                     <!--<a href =" http://countdown.tfl.gov.uk/#%7CstopCode=%= disruption.startStopCode %>" target="_blank">%= disruption.startStop %></a>-->
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStopCode %>" target="_blank"><%= disruption.fromStopName %></a>
+                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStop.code %>" target="_blank"><%= disruption.fromStop.name%></a>
                     </td>
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.toStopCode %>" target="_blank"><%= disruption.toStopName %></a>
+                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.toStop.code %>" target="_blank"><%=disruption.toStop.name %></a>
                     </td>
-                    <td class="delayCell <%= disruption.delayColor %>"><%= disruption.delay %></td>
-                    <td class="delayCell <%= disruption.totalDelayColor %>"><%= disruption.routeTotalDelay %></td>
+                    <td class="delayCell <%= disruption.delayColor %>"><%= disruption.getDelay %></td>
+                    <td class="delayCell <%= disruption.totalDelayColor %>"><%= disruption.getTotalDelay %></td>
                     <td class="trendCell <%= disruption.trendColor %>"><%= raw(disruption.trendSymbol) %>
                     </td>
-                    <td> <%= formatDatetimeString(disruption.timeFirstDetected) %></td>
+                    <td> <%= disruption.getDetectedAt %></td>
                     <td><a href="#" data-reveal-id="disruptionDetails" class="tiny">More</a></td>
-                    <td><a href="#" class="tiny disabled">Hide</a></td>
+                    <td><a href="id=<%=disruption.id%>" data-reveal-id="settingsModal" class="tiny disabled">Hide</a></td>
                 </tr>
             <% end %>
             </tbody>

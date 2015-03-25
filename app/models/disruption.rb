@@ -1,4 +1,10 @@
 class Disruption < ActiveRecord::Base
+  self.table_name = "Disruptions"
+  has_one :fromStop, :class_name => "BusStop", :foreign_key => "lbslCode", :primary_key => "fromStopLBSLCode"
+  has_one :toStop, :class_name => "BusStop", :foreign_key => "lbslCode", :primary_key => "toStopLBSLCode"
+
+  require 'time'
+  TIME_FORMAT = "%m/%d/%Y %H:%M:%S"
 
   MEDIUM_THRESHOLD = 20
   SERIOUS_THRESHOLD = 40
@@ -14,21 +20,40 @@ class Disruption < ActiveRecord::Base
   TREND_SYMBOL_NEGATIVE = "&#8595;"
   TREND_SYMBOL_NEUTRAL = "&#8597;"
 
+  def getDetectedAt
+    return self.firstDetectedAt.strftime("%H:%M:%S")
+  end
+
+  def getRunString
+    if (self.run == 1)
+      return "Outbound"
+    end
+    return "Inbound"
+  end
+
+  def getDelay
+    return secondsToMinutes(self.delayInSeconds)
+  end
+
+  def getTotalDelay
+    return secondsToMinutes(self.routeTotalDelayInSeconds)
+  end
+
   def totalDelayColor
-    if (self.routeTotalDelay > SEVERE_THRESHOLD)
+    if (self.getTotalDelay > SEVERE_THRESHOLD)
       return "severe"
     end
-    if (self.routeTotalDelay > SERIOUS_THRESHOLD)
+    if (self.getTotalDelay > SERIOUS_THRESHOLD)
       return "serious"
     end
     return "medium"
   end
 
   def delayColor
-    if (self.delay > SEVERE_THRESHOLD)
+    if (self.getDelay > SEVERE_THRESHOLD)
       return "severe"
     end
-    if (self.delay > SERIOUS_THRESHOLD)
+    if (self.getDelay > SERIOUS_THRESHOLD)
       return "serious"
     end
     return "medium"
@@ -54,4 +79,7 @@ class Disruption < ActiveRecord::Base
     end
   end
 
+  def secondsToMinutes(seconds)
+    return (seconds / 60).round
+  end
 end

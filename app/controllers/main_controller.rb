@@ -1,7 +1,4 @@
 class MainController < ApplicationController
-  require 'csv'
-  INPUT_FILENAME = "E:\\Workspace\\iBusNetTestDirectory\\DisruptionReports\\Report.csv"
-  INPUT_COLUMN_SEPARATOR = ','
   TIMEOUT = 5000
 
   def speed
@@ -44,11 +41,7 @@ class MainController < ApplicationController
   end
 
   def index
-    if (File.exists? INPUT_FILENAME)
-      @version = File.mtime(INPUT_FILENAME)
-    else
-      @version = ""
-    end
+    @lastUpdateTime = EngineConfiguration.find("latestFeedTime").value
     @timeout = TIMEOUT
     getDisruptions
   end
@@ -59,66 +52,8 @@ class MainController < ApplicationController
   private
 
   def getDisruptions
-    disruptions = []
-    if (File.exists? INPUT_FILENAME)
-      CSV.foreach(INPUT_FILENAME, :headers => true, :col_sep => INPUT_COLUMN_SEPARATOR) do |row|
-        disruptions << Disruption.new(:route => row['Route'],
-                                      :direction => row['Direction'],
-                                      :fromStopName => row['FromStopName'],
-                                      :fromStopCode => row['FromStopCode'],
-                                      :toStopName => row['ToStopName'],
-                                      :toStopCode => row['ToStopCode'],
-                                      :delay => row['DisruptionObserved'],
-                                      :routeTotalDelay => row['RouteTotal'],
-                                      :trend => row['Trend'],
-                                      :timeFirstDetected => row['TimeFirstDetected'])
-      end
-      #Order descending by disruption time observed
-      disruptions = disruptions.sort_by { |a| [a.delay*-1, a.routeTotalDelay*-1, a.timeFirstDetected] }
-    end
+    disruptions = Disruption.order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc).all
     @disruptions = disruptions.paginate(:page => params[:page], :per_page => 20)
   end
-
-
-  # def importDisruptions
-  #   @time = Time.new.strftime("%m/%d/%Y %H:%M:%S ")
-  #   @lastModifiedTime = File.mtime(INPUT_FILENAME)
-  #   @tableLastUpdated = Disruption.maximum('updated_at')
-  #
-  #   if (@tableLastUpdated == nil || @lastModifiedTime > @tableLastUpdated)
-  #     Disruption.delete_all
-  #     disruptions = []
-  #     CSV.foreach(INPUT_FILENAME, :headers => true, :col_sep => ',') do |row|
-  #       disruptions << Disruption.new(:route => row['Route'],
-  #                                     :direction => row['Direction'],
-  #                                     :fromStopName => row['FromStopName'],
-  #                                     :fromStopCode => row['FromStopCode'],
-  #                                     :toStopName => row['ToStopName'],
-  #                                     :toStopCode => row['ToStopCode'],
-  #                                     :delay => row['DisruptionObserved'],
-  #                                     :routeTotalDelay => row['RouteTotal'],
-  #                                     :trend => row['Trend'],
-  #                                     :timeFirstDetected => row['TimeFirstDetected'])
-  #       list.append({:route => row['Route'],
-  #                    :direction => row['Direction'],
-  #                    :fromStopName => row['FromStopName'],
-  #                    :fromStopCode => row['FromStopCode'],
-  #                    :toStopName => row['ToStopName'],
-  #                    :toStopCode => row['ToStopCode'],
-  #                    :delay => row['DisruptionObserved'],
-  #                    :routeTotalDelay => row['RouteTotal'],
-  #                    :trend => row['Trend'],
-  #                    :timeFirstDetected => row['TimeFirstDetected']})
-  #     end
-  #
-  #     Disruption.import disruptions
-  #     Disruption.create(list)
-  #   end
-  #
-  #   Order descending by disruption time observed
-  #   @disruptions = Disruption.order(delay: :desc, routeTotalDelay: :desc, timeFirstDetected: :desc).first(20)
-  #
-  #   @totalNumberOfDisruptions = Disruption.count
-  # end
 
 end

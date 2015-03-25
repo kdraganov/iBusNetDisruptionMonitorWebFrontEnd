@@ -1,8 +1,6 @@
 <% content_for :header do %>
-    <%= stylesheet_link_tag "responsive-tables" %>
     <%= javascript_include_tag "disruptionList" %>
 <% end %>
-
 
 <div class="row">
     <div class="large-12 columns">
@@ -10,8 +8,12 @@
     </div>
 </div>
 
+<div id="disruptionList">
+    <%= render 'disruptionList' %>
+</div>
+
 <div class="row">
-    <div class="large-12 columns">
+    <div class="large-12 columns" style="font-size: 0.8em;text-align: right;font-weight: bold;">
         <a id="slow" href="#" onclick="setSpeed('slow')">Slow</a> |
         <a id="normal" href="#" onclick="setSpeed('normal')">Normal</a> |
         <a id="pause" href="#" onclick="setSpeed('pause')">Pause</a> |
@@ -19,13 +21,8 @@
     </div>
 </div>
 
-<div id="disruptionList">
-    <%= render 'disruptionList' %>
-</div>
-
-
 <script type="text/javascript">
-    $( document ).ready(function() {
-        poll("<%= @version %>", <%= @timeout %>);
+    $(document).ready(function () {
+        //poll("<= version %>", <= timeout %>);
     });
 </script>
