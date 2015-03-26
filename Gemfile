@@ -1,6 +1,5 @@
 source 'http://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use sqlite3 as the database for Active Record
@@ -48,3 +47,6 @@ gem 'coffee-script-source', '1.8.0'
 gem 'foundation-rails'
 gem 'activerecord-import'
 gem 'will_paginate', '~> 3.0.6'
+
+gem 'googlecharts'
+# gem 'mattetti-googlecharts', source: " http://gems.github.com/"

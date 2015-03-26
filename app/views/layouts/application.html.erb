@@ -24,18 +24,15 @@
                 <ul class="title-area">
                     <li class="name">
                         <h1>
-                            <a href="http://localhost:3000/main/index">
-                                iBus Disruption Monitor
-                            </a>
+                            <%= link_to "iBus Disruption Monitor", controller: "main", action: "index" %>
                         </h1>
                     </li>
                     <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
                 </ul>
-
                 <section class="top-bar-section">
                     <ul class="right">
                         <li>
-                            <!--class="active"--><%= link_to "Home", controller: "main", action: "index" %></li>
+                            <!--class="active"--><%= link_to "Disruptions", controller: "main", action: "index" %></li>
                         <li><%= link_to "History", controller: "history", action: "index" %></li>
                         <li><%= link_to "Settings", controller: "settings", action: "index" %></li>
                         <!--
@@ -56,7 +53,7 @@
                             </form>
                         </li>
                         <li class="has-button">
-                            <a class="small button" href="#">Search</a>
+                            <a class="small button disabled" href="#">Search</a>
                         </li>-->
                     </ul>
                 </section>
@@ -68,9 +65,7 @@
 <!--END:TopNavMenu
 
 <!--BEGIN:MainContent-->
-
 <%= yield %>
-
 <!--END:MainContent-->
 
 <!--BEGIN:Footer-->
@@ -94,32 +89,14 @@
         <div class="row text-center">
             <p>
                 © Copyright <%= Time.now.year %>
-                <a href="http://uk.linkedin.com/in/kdraganov" target="_blank">Konstantin Draganov</a>.
+                <a href="http://uk.linkedin.com/in/kdraganov" target="_blank">Konstantin Draganov</a>
             </p>
         </div>
     </div>
 </footer>
 <!--END:Footer-->
-
-<div id="loginModal" class="reveal-modal" data-reveal>
-    <form>
-        <fieldset>
-            <legend><h2>Login</h2></legend>
-            <label>Username
-                <input type="text" placeholder="Enter your username or email">
-            </label>
-            <label>Password
-                <input type="password" placeholder="Enter your password">
-            </label>
-            <a href="settings.html" class="button round expand">Login</a>
-        </fieldset>
-    </form>
-    <a class="close-reveal-modal">&#215;</a>
-</div>
-
+<%= render 'layouts/loginModal' %>
 <%= render 'layouts/termsModal' %>
 <%= render 'layouts/privacyModal' %>
-
-
 </body>
 </html>

@@ -1,15 +1,54 @@
 class MainController < ApplicationController
   require 'time'
+  require 'gchart'
 
   def details
-    @id = Integer(params[:id])
-    if (@id != nil)
-
+    id = Integer(params[:id])
+    if (id != nil)
       #TODO: Load and display more details for the disruptions
       #related routes/disruptions
       #detailed info
       #graph of the sections
+      @disruption = Disruption.includes(:fromStop, :toStop).find(id)
 
+      # @sections = Section.includes(:startStop, :endStop, :latestLostTime).where("route = ? AND run = ?", @disruption.route, @disruption.run).order(sequence: :asc)
+
+      @sections = Section.includes(:startStop, :endStop, :latestLostTime).where("route = ? AND run = ? ", @disruption.route, @disruption.run).order(sequence: :asc)
+
+      startIndex = Section.where("route = ? AND run = ? AND \"startStopLBSLCode\" = ?", @disruption.route, @disruption.run, @disruption.fromStopLBSLCode)[0].sequence
+      endIndex = Section.where("route = ? AND run = ? AND \"startStopLBSLCode\" = ?", @disruption.route, @disruption.run, @disruption.toStopLBSLCode)[0].sequence
+
+      # @routeTotal = 0
+      # @sections.each do |section|
+      #   @routeTotal += section.latestLostTime.lostTimeInSeconds
+      # end
+      # @routeTotal = (@routeTotal / 60).round
+      @xaxisLabels = Array.new
+      data = Array.new
+      maxValue = 0
+      @sections.each do |section|
+        if (section.sequence >= startIndex - 2 && section.sequence <= endIndex + 2)
+          @xaxisLabels.push(section.startStopLBSLCode)
+          lostTime = section.latestLostTime.lostTimeInSeconds / 60
+          data.push(lostTime)
+          if (maxValue < lostTime)
+            maxValue = lostTime
+          end
+        end
+      end
+      @chart = Gchart.line(
+          :size => '700x428',
+          :encoding => 'text',
+          :title_color => '76A4FB',
+          :title => "Time loss per section along route " + @disruption.route + " in " + @disruption.getRunString + " direction",
+          :bg => 'efefef',
+          :line_colors => '76A4FB',
+          :axis_with_labels => [['x'], ['y']],
+          :max_value => maxValue,
+          :min_value => 0,
+          :axis_labels => [@xaxisLabels, 'Mins'],
+          :axis_range => [nil, [0, 150, [maxValue/10, 1].max]],
+          :data => data)
       render partial: "disruptionDetails"
     else
       render text: "<h1>No disruption specified</h1> <a class=\"close-reveal-modal\">&#215;</a>"
@@ -87,6 +126,7 @@ class MainController < ApplicationController
   def getDisruptions
     #TODO: improve ordering
     disruptions = Disruption.includes(:fromStop, :toStop).where("\"clearedAt\" IS NULL AND NOT \"hide\"").order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
+    # disruptions = Disruption.includes(:fromStop, :toStop).order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
     return disruptions.paginate(:page => params[:page], :per_page => 20)
   end
 

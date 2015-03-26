@@ -63,6 +63,7 @@ GEM
       sass (>= 3.3.0, < 3.5)
     globalid (0.3.2)
       activesupport (>= 4.1.0)
+    googlecharts (1.6.10)
     hike (1.2.3)
     i18n (0.7.0)
     jbuilder (2.2.6)
@@ -162,6 +163,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   coffee-script-source (= 1.8.0)
   foundation-rails
+  googlecharts
   jbuilder (~> 2.0)
   jquery-rails
   pg
