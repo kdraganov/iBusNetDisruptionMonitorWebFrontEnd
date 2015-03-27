@@ -4,11 +4,6 @@
             <%= page_entries_info @disruptions %>
         </span>
     </div>
-    <div class="large-6 medium-6 small-6 columns">
-        <span style="font-size:0.8em;float:right;">
-            <i>Last updated: <span id="lastUpdateTime" style="font-weight:bold;"><%= @lastUpdateTime %> </span></i>
-        </span>
-    </div>
 </div>
 
 <div class="row">
@@ -31,12 +26,12 @@
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in minutes.">Total delay</span>
                 </th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is increasing (<span style=color:#FF5468;>&#8593;</span>) and if it is normalising (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">Trend</span>
-                </th>
-                <th>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">Detected</span>
                 </th>
-                <th class="sorttable_nosort" width="100" style="text-align: center;">Actions</th>
+                <th>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when disruption was no longer detected by the system.">Cleared</span>
+                </th>
+                <th class="sorttable_nosort" width="80">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -54,9 +49,9 @@
                     </td>
                     <td class="delayCell <%= disruption.delayColor %>"><%= disruption.getDelay %></td>
                     <td class="delayCell <%= disruption.totalDelayColor %>"><%= disruption.getTotalDelay %></td>
-                    <td class="trendCell <%= disruption.trendColor %>"><%= raw(disruption.trendSymbol) %>
                     </td>
-                    <td> <%= disruption.getDetectedAt %></td>
+                    <td> <%= disruption.getDetectedAt(true) %></td>
+                    <td> <%= disruption.getClearedAt(true) %></td>
                     <td style="text-align: center;">
                         <a href="<%= main_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
                             <%= image_tag "details.png", size: "24", alt: "Show more details", title: "Show more details about disruption" %>
@@ -64,7 +59,6 @@
                         <a href="<%= main_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
                             <%= image_tag "comments.png", size: "24", alt: "Show comments", title: "Show comments about disruption" %>
                         </a>
-                        <a href="id=<%= disruption.id %>" data-reveal-id="loginModal" class="tiny disabled"> <%= image_tag "hide.png", size: "24", alt: "Hide", title: "Hide disruption" %></a>
                     </td>
                 </tr>
             <% end %>

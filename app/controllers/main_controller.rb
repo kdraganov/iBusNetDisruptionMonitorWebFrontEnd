@@ -2,6 +2,15 @@ class MainController < ApplicationController
   require 'time'
   require 'gchart'
 
+  def comments
+    id = Integer(params[:id])
+    if (id != nil)
+      render partial: "comments"
+    else
+      render text: "<h1>No disruption specified</h1> <a class=\"close-reveal-modal\">&#215;</a>"
+    end
+  end
+
   def details
     id = Integer(params[:id])
     if (id != nil)
@@ -58,7 +67,7 @@ class MainController < ApplicationController
   def view
     if (params[:lastUpdateTime])
       begin
-        clientLastUpdateTime = Time.parse(params[:lastUpdateTime])
+        clientLastUpdateTime = Time.strptime(params[:lastUpdateTime], " %H:%M:%S %m/%d/%Y")
       rescue ArgumentError
         clientLastUpdateTime = false
       end
@@ -126,12 +135,12 @@ class MainController < ApplicationController
   def getDisruptions
     #TODO: improve ordering
     disruptions = Disruption.includes(:fromStop, :toStop).where("\"clearedAt\" IS NULL AND NOT \"hide\"").order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
-    # disruptions = Disruption.includes(:fromStop, :toStop).order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
+    #disruptions = Disruption.includes(:fromStop, :toStop).order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
     return disruptions.paginate(:page => params[:page], :per_page => 20)
   end
 
   def formatDatetimeString(timeString)
-    return Time.strptime(timeString, TIME_FORMAT).strftime("%H:%M:%S %m/%d/%Y")
+    return Time.strptime(timeString, TIME_FORMAT).strftime("%H:%M:%S %d/%m/%Y")
   end
 
 end

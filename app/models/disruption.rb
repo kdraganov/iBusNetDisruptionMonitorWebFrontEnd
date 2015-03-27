@@ -21,8 +21,25 @@ class Disruption < ActiveRecord::Base
   TREND_SYMBOL_NEGATIVE = "&#8595;"
   TREND_SYMBOL_NEUTRAL = "&#8597;"
 
-  def getDetectedAt
-    return self.firstDetectedAt.strftime("%H:%M:%S")
+  def getDetectedAt(date = false)
+    if(date)
+      format = "%H:%M:%S %m/%d/%Y"
+    else
+      format = "%H:%M:%S"
+    end
+    return self.firstDetectedAt.strftime(format)
+  end
+
+  def getClearedAt(date = false)
+    if(date)
+      format = "%H:%M:%S %m/%d/%Y"
+    else
+      format = "%H:%M:%S"
+    end
+    if (self.clearedAt != nil)
+      return self.clearedAt.strftime(format)
+    end
+    return ""
   end
 
   def getRunString

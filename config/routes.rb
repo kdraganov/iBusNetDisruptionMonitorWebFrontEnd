@@ -4,9 +4,13 @@ Rails.application.routes.draw do
   get 'main/view'
   get 'main/hide'
   get 'main/details'
+  get 'main/comments'
   get 'main/speed'
   get 'history/index'
+  get 'history/filter'
   get 'settings/index'
+  get 'settings/edit'
+  post 'settings/save'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

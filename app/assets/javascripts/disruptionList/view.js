@@ -21,7 +21,7 @@ function ajaxPollCall(lastUpdateTime) {
                 $("#lastUpdateTime").html(result.lastUpdateTime)
             }
             poll(result.lastUpdateTime, result.timeout)
-
+            sorttable.makeSortable(document.getElementById("disruptionsTable"));
         }
     });
 }

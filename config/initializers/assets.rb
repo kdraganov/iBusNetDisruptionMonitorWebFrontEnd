@@ -6,6 +6,12 @@ Rails.application.config.assets.precompile += %w( disruptionList.js )
 Rails.application.config.assets.precompile += %w( SampleStripMap.png )
 Rails.application.config.assets.precompile += %w( SampleMap.png )
 Rails.application.config.assets.precompile += %w( SampleMapOverview.png )
+Rails.application.config.assets.precompile += %w( hide.png )
+Rails.application.config.assets.precompile += %w( inbound.png )
+Rails.application.config.assets.precompile += %w( outbound.png )
+Rails.application.config.assets.precompile += %w( details.png )
+Rails.application.config.assets.precompile += %w( comments.png )
+Rails.application.config.assets.precompile += %w( edit.png )
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
 
