@@ -1,7 +1,3 @@
-<% content_for :header do %>
-    <%= javascript_include_tag "disruptionList" %>
-<% end %>
-
 <div class="row">
     <div class="large-12 columns">
         <h1>Disruptions</h1>
@@ -21,4 +17,36 @@
     $(document).ready(function () {
         poll("<%= @lastUpdateTime %>", <%= @timeout %>);
     });
+
+    function poll(version, timeout) {
+        setTimeout(function () {
+            if ($("#disruptionList") != null) {
+                ajaxPollCall(version);
+            }
+        }, timeout);
+    }
+
+    function ajaxPollCall(lastUpdateTime) {
+        if (document.URL == "<%= request.protocol + request.host%>" + ":3000/main/index" || document.URL == "<%= request.protocol + request.host%>" + ":3000/") {
+            new $.ajax('/main/view', {
+                method: 'get',
+                data: {lastUpdateTime: lastUpdateTime},
+                success: function (result) {
+                    if (result.update) {
+                        $("#disruptionList").html(result.partial);
+                        sorttable.makeSortable(document.getElementById("disruptionsTable"));
+                    } else {
+                        $("#lastUpdateTime").html(result.lastUpdateTime)
+                    }
+                    poll(result.lastUpdateTime, result.timeout)
+                }
+            });
+        }
+    }
+    function setSpeed(speed) {
+        new $.ajax('/main/speed', {
+            method: 'get',
+            data: {speed: speed}
+        });
+    }
 </script>

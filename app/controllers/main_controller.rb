@@ -67,19 +67,20 @@ class MainController < ApplicationController
   def view
     if (params[:lastUpdateTime])
       begin
-        clientLastUpdateTime = Time.strptime(params[:lastUpdateTime], " %H:%M:%S %m/%d/%Y")
+        clientLastUpdateTime = DateTime.parse(params[:lastUpdateTime]).to_i
+          # Time.strptime(params[:lastUpdateTime], "%H:%M:%S %m/%d/%Y")
       rescue ArgumentError
-        clientLastUpdateTime = false
+        clientLastUpdateTime = nil
       end
     end
 
-    lastUpdateTime = getLatUpdateTime
-    if (clientLastUpdateTime == false || clientLastUpdateTime < Time.parse(lastUpdateTime))
+    lastUpdateTime = formatDatetimeString(getLatUpdateTime)
+    if (clientLastUpdateTime == nil || clientLastUpdateTime< DateTime.parse(lastUpdateTime).to_i)
       @lastUpdateTime = lastUpdateTime
       @disruptions = getDisruptions
-      @return = {:error => false, :update => true, :partial => render_to_string(:partial => "disruptionList"), :lastUpdateTime => formatDatetimeString(lastUpdateTime), :timeout => TIMEOUT}
+      @return = {:error => false, :update => true, :partial => render_to_string(:partial => "disruptionList"), :lastUpdateTime => lastUpdateTime, :timeout => TIMEOUT}
     else
-      @return = {:error => false, :update => false, :lastUpdateTime => formatDatetimeString(lastUpdateTime), :timeout => TIMEOUT}
+      @return = {:error => false, :update => false, :lastUpdateTime => lastUpdateTime, :timeout => TIMEOUT}
     end
     render :json => ActiveSupport::JSON.encode(@return)
   end
