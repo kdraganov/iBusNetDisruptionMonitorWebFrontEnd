@@ -10,9 +10,15 @@ class SettingsController < ApplicationController
   end
 
   def save
-    #TODO: validate and save value
-    #redirect to index and show alert for success else display error in modal
-    render text: "YES"
+    if (params[:key] != nil)
+      config = EngineConfiguration.find_by_key(params[:key])
+      config.value = params[:value]
+      config.save
+      render :json => ActiveSupport::JSON.encode({:error => false, :newValue => config.value, :key => params[:key]})
+    else
+      render :json => ActiveSupport::JSON.encode({:error => true, :errorText => "Some error occured."})
+    end
+
   end
 
   def index

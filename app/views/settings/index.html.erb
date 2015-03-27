@@ -4,6 +4,7 @@
     </div>
 </div>
 
+
 <div class="row">
     <div class="large-12 columns">
         <table id="settings" class="sortable" width="100%">
@@ -18,7 +19,7 @@
             <% @configs.each do |config| %>
                 <tr>
                     <td><%= config.key %></td>
-                    <td><%= config.value %></td>
+                    <td id="<%= config.key %>"><%= config.value %></td>
                     <td style="text-align: center;">
                         <a href="<%= settings_edit_path(id: config.key) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
                             <%= image_tag "edit.png", size: "24", alt: "Edit", title: "Edit configuration parameter" %>
@@ -47,8 +48,10 @@
             method: 'post',
             data: {key: $('#key').val(), value: $('#value').val()},
             success: function (result) {
-                $('#revealModal').foundation('reveal', 'close');
-                alert(result)
+                if (!result.error) {
+                    $('#revealModal').foundation('reveal', 'close');
+                    document.getElementById(result.key).innerHTML = result.newValue;
+                }
             }
         });
     }
