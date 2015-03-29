@@ -1264,8 +1264,8 @@ $primary-color: #0066CC;
 // $include-html-table-classes: $include-html-classes;
 
 // These control the background color for the table and even rows
-// $table-bg: $white;
-// $table-even-row-bg: $snow;
+//$table-bg: $white;
+$table-even-row-bg: #f1f1f1;
 
 // These control the table cell border style
 // $table-border-style: solid;
@@ -1273,7 +1273,7 @@ $primary-color: #0066CC;
 // $table-border-color: $gainsboro;
 
 // These control the table head styles
-// $table-head-bg: $white-smoke  ;
+$table-head-bg: #f1f1f1;
 // $table-head-font-size: rem-calc(14);
 // $table-head-font-color: $jet;
 // $table-head-font-weight: $font-weight-bold;

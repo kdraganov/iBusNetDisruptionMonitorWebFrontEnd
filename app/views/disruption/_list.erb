@@ -19,19 +19,19 @@
                 <th width="20">Route</th>
                 <th>Direction</th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">From</span>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>from</strong> which disruption is observed.">From</span>
                 </th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">To</span>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>to</strong> which disruption is observed.">To</span>
                 </th>
                 <th width="105">
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed accross the given section.">Delay</span>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed across the given section(in minutes).">Delay</span>
                 </th>
                 <th width="105">
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in minutes.">Total delay</span>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in the given direction(in minutes).">Total delay</span>
                 </th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is increasing (<span style=color:#FF5468;>&#8593;</span>) and if it is normalising (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">Trend</span>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is worsening (<span style=color:#FF5468;>&#8593;</span>) and if it is improving (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">Trend</span>
                 </th>
                 <th>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">Detected</span>
@@ -43,14 +43,14 @@
             <% @disruptions.each do |disruption| %>
                 <tr>
                     <td>
-                        <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.getRunString %>" target="_blank"><%= disruption.route %></a>
+                        <%= getLinkToBusRoute(disruption.route, disruption.getRunString).html_safe %>
                     </td>
-                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>"> <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString%></td>
+                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>"> <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString %></td>
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStop.code %>" target="_blank"><%= disruption.fromStop.name.split.map(&:capitalize).join(' ') %></a>
+                        <%= getLinkToBusStop(disruption.fromStop).html_safe %>
                     </td>
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.toStop.code %>" target="_blank"><%= disruption.toStop.name.split.map(&:capitalize).join(' ') %></a>
+                        <%= getLinkToBusStop(disruption.toStop).html_safe %>
                     </td>
                     <td class="delayCell <%= disruption.delayColor %>"><%= disruption.getDelay %></td>
                     <td class="delayCell <%= disruption.totalDelayColor %>"><%= disruption.getTotalDelay %></td>
@@ -58,10 +58,11 @@
                     </td>
                     <td> <%= disruption.getDetectedAt %></td>
                     <td style="text-align: center;">
-                        <a href="<%= main_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
+                        <a  onclick="details(<%=disruption.id%>)">
+                        <!--<a href="<= disruption_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">-->
                             <%= image_tag "details.png", size: "24", alt: "Show more details", title: "Show more details about disruption" %>
                         </a>
-                        <a href="<%= main_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
+                        <a href="<%= disruption_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
                             <%= image_tag "comments.png", size: "24", alt: "Show comments", title: "Show comments about disruption" %>
                         </a>
                         <a href="id=<%= disruption.id %>" data-reveal-id="loginModal" class="tiny disabled"> <%= image_tag "hide.png", size: "24", alt: "Hide", title: "Hide disruption" %></a>

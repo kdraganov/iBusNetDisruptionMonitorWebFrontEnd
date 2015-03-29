@@ -9,6 +9,7 @@
         <div class="large-12 columns">
             <div class="panel" style="text-align: justify;">
                 <br>
+
                 <h3>Real-time visualisation of bus delays in London in collaboration with Transport for London</h3>
                 <br>
 
@@ -47,13 +48,16 @@
                 <div class="row" style="text-align: left;">
                     <hr size="3" style="padding-top:1em;"/>
                     <div class="large-4 medium-4 columns">
-                        <p><a href="http://uk.linkedin.com/in/kdraganov" target="_blank">Konstantin Draganov</a><br/>Author</p>
+                        <p><a href="http://uk.linkedin.com/in/kdraganov" target="_blank">Konstantin Draganov</a><br/>Author
+                        </p>
                     </div>
                     <div class="large-4 medium-4 columns">
-                        <p><a href="http://steffen-zschaler.de/" target="_blank">Dr Steffen Zschaler</a><br/>Project supervisor</p>
+                        <p><a href="http://steffen-zschaler.de/" target="_blank">Dr Steffen Zschaler</a><br/>Project
+                            supervisor</p>
                     </div>
                     <div class="large-4 medium-4 columns">
-                        <p><a href="http://tfl.gov.uk/corporate/about-tfl/" target="_blank">TFL</a><br/>Data provider</p>
+                        <p><a href="http://tfl.gov.uk/corporate/about-tfl/" target="_blank">TFL</a><br/>Data provider
+                        </p>
                     </div>
                 </div>
             </div>
@@ -61,3 +65,50 @@
     </div>
 
 </section>
+
+<div id="lineGraph"></div>
+
+<script>
+    dataArray = [['Section', 'Lost time'],['StopA - StopB', 6], ['StopA - StopB', 25], ['StopA - StopB', 15], ['StopA - StopB', 5], ['StopA - StopB', 3]];
+
+    google.load('visualization', '1', {packages: ['corechart', 'line']});
+    google.setOnLoadCallback(drawGraph);
+
+    function drawGraph() {
+        var data = new google.visualization.arrayToDataTable(dataArray);
+
+//        var data = new google.visualization.DataTable();
+//        data.addColumn('string', 'Section');
+//        data.addColumn('number', 'Lost time');
+//
+//        data.addRows(dataArray
+////            [0, 6],[1, 25],[2, 15],[3, 5],[4, 3],
+//            ['StopA - StopB', 6], ['StopA - StopB', 25], ['StopA - StopB', 15], ['StopA - StopB', 5], ['StopA - StopB', 3],
+//        );
+
+        var options = {
+            curveType: 'function',
+            width: 900,
+            height: 500,
+            hAxis: {
+                title: 'Sections'
+            },
+            vAxis: {
+                title: 'Minutes'
+            },
+            colors: ['#a52714', '#097138'],
+//            crosshair: {
+//                color: '#000',
+//                trigger: 'selection'
+//            }
+            backgroundColor: '#f1f8e9'
+//            trendlines: {
+//                0: {type: 'exponential', color: '#333', opacity: 1},
+//                1: {type: 'linear', color: '#111', opacity: .3}
+//            }
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('lineGraph'));
+        chart.draw(data, options);
+//        chart.setSelection([{row: 38, column: 1}]);
+    }
+</script>

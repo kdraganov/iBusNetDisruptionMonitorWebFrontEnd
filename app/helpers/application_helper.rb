@@ -9,4 +9,8 @@ module ApplicationHelper
   def formatDatetimeStringWithDate(timeString)
     return Time.strptime(timeString, TIME_FORMAT).strftime("%H:%M:%S %m/%d/%Y")
   end
+
+  def capitalizeAll(string)
+    return string.split.map(&:capitalize).join(' ')
+  end
 end

@@ -98,6 +98,6 @@ class Disruption < ActiveRecord::Base
   end
 
   def secondsToMinutes(seconds)
-    return (seconds / 60).round
+    return (seconds / 60).floor
   end
 end

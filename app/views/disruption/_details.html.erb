@@ -1,0 +1,46 @@
+<h4>Route <%= getLinkToBusRoute(@disruption.route, @disruption.getRunString).html_safe %>
+    disrupted <%= @disruption.getRunString.downcase %>- first detected at  <%= @disruption.getDetectedAt(true) %>
+</h4>
+<h5> Average disruption of <strong><%= @disruption.getDelay %></strong> minutes observed between
+    <%= getLinkToBusStop(@disruption.fromStop).html_safe %> and
+    <%= getLinkToBusStop(@disruption.toStop).html_safe %></h5>
+
+<div class="row">
+    <div class="large-12 columns">
+        <div style="text-align: center; overflow-x: auto; overflow-y: hidden; ">
+            <div id="lineGraph" style="display:inline-block; margin: 0 auto;"></div>
+        </div>
+    </div>
+</div>
+<!--
+<div class="row" style="margin-top: 0.3em;">
+    <div class="large-12 columns">
+        <div style="text-align: center">
+            Total average disruption observed across route <strong><%= @disruption.getTotalDelay %></strong> minutes
+            <table width="100%">
+                <thead>
+                <th>Sequence</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Lost</th>
+                <th>#Observations</th>
+                </thead>
+                <tbody>
+                < @sections.each do |section| %>
+                    < #if (@xaxisLabels.include? section.sequence)      %>
+                    <tr>
+                        <td> <= section.sequence %></td>
+                        <td>  <= getLinkToBusStop(section.startStop).html_safe %></td>
+                        <td>  <= getLinkToBusStop(section.endStop).html_safe %></td>
+                        <td> <= secondsToMinutes(section.latestLostTime.lostTimeInSeconds) %></td>
+                        <td> <= section.latestLostTime.numberOfObservations %></td>
+                    </tr>
+                    < #end      %>
+                < end %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>-->
+<!--<a href="<= @chart %>">chart</a> -->
+<a class="close-reveal-modal">&#215;</a>

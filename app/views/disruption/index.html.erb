@@ -5,19 +5,15 @@
 </div>
 
 <div id="disruptionList">
-    <%= render 'disruptionList' %>
+    <%= render 'list' %>
 </div>
 
-<%= render 'engineSpeedControl' %>
+<%= render 'main/engineSpeedControl' %>
 
 <div id="revealModal" class="reveal-modal xlarge" data-reveal>
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        poll("<%= @lastUpdateTime %>", <%= @timeout %>);
-    });
-
     function poll(version, timeout) {
         setTimeout(function () {
             if ($("#disruptionList") != null) {
@@ -27,8 +23,8 @@
     }
 
     function ajaxPollCall(lastUpdateTime) {
-        if (document.URL == "<%= request.protocol + request.host%>" + ":3000/main/index" || document.URL == "<%= request.protocol + request.host%>" + ":3000/") {
-            new $.ajax('/main/view', {
+        if (document.URL == "<%= request.protocol + request.host%>" + ":3000/disruption/index" || document.URL == "<%= request.protocol + request.host%>" + ":3000/") {
+            new $.ajax('/disruption/list', {
                 method: 'get',
                 data: {lastUpdateTime: lastUpdateTime},
                 success: function (result) {
@@ -43,10 +39,8 @@
             });
         }
     }
-    function setSpeed(speed) {
-        new $.ajax('/main/speed', {
-            method: 'get',
-            data: {speed: speed}
-        });
-    }
+
+    $(document).ready(function () {
+        poll("<%= @lastUpdateTime %>", <%= @timeout %>);
+    });
 </script>

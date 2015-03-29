@@ -38,14 +38,14 @@
             <% @disruptions.each do |disruption| %>
                 <tr>
                     <td>
-                        <a href="http://www.tfl.gov.uk/bus/route/<%= disruption.route %>/?direction=<%= disruption.getRunString %>" target="_blank"><%= disruption.route %></a>
+                        <%= getLinkToBusRoute(disruption.route, disruption.getRunString).html_safe %>
                     </td>
-                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>"> <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString%></td>
+                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>"> <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString %></td>
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.fromStop.code %>" target="_blank"><%= disruption.fromStop.name.split.map(&:capitalize).join(' ') %></a>
+                        <%= getLinkToBusStop(disruption.fromStop).html_safe %>
                     </td>
                     <td>
-                        <a href="http://countdown.tfl.gov.uk/#|searchTerm=<%= disruption.toStop.code %>" target="_blank"><%= disruption.toStop.name.split.map(&:capitalize).join(' ') %></a>
+                        <%= getLinkToBusStop(disruption.toStop).html_safe %>
                     </td>
                     <td class="delayCell <%= disruption.delayColor %>"><%= disruption.getDelay %></td>
                     <td class="delayCell <%= disruption.totalDelayColor %>"><%= disruption.getTotalDelay %></td>
@@ -53,10 +53,11 @@
                     <td> <%= disruption.getDetectedAt(true) %></td>
                     <td> <%= disruption.getClearedAt(true) %></td>
                     <td style="text-align: center;">
-                        <a href="<%= main_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
+                        <a  onclick="details(<%=disruption.id%>)">
+                        <!--<a href="<= disruption_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">-->
                             <%= image_tag "details.png", size: "24", alt: "Show more details", title: "Show more details about disruption" %>
                         </a>
-                        <a href="<%= main_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
+                        <a href="<%= disruption_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
                             <%= image_tag "comments.png", size: "24", alt: "Show comments", title: "Show comments about disruption" %>
                         </a>
                     </td>

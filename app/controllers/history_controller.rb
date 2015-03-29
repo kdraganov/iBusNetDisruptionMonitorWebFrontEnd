@@ -2,7 +2,7 @@ class HistoryController < ApplicationController
 
   def filter
     @disruptions = getDisruptions(params[:from], params[:to])
-    render partial: 'disruptionList'
+    render partial: 'list'
   end
 
   def index

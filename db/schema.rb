@@ -54,7 +54,8 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "EngineConfigurations", primary_key: "key", force: :cascade do |t|
-    t.string "value", limit: 500
+    t.string  "value",    limit: 500
+    t.boolean "editable",             default: false, null: false
   end
 
   create_table "Operators", force: :cascade do |t|
@@ -73,9 +74,10 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "SectionsLostTime", primary_key: "serialId", force: :cascade do |t|
-    t.integer  "sectionId",         default: "nextval('"SectionsLostTime_sectionId_seq"'::regclass)", null: false
+    t.integer  "sectionId",            default: "nextval('"SectionsLostTime_sectionId_seq"'::regclass)", null: false
     t.integer  "lostTimeInSeconds"
-    t.datetime "timestamp",         default: "now()",                                                 null: false
+    t.datetime "timestamp",            default: "now()",                                                 null: false
+    t.integer  "numberOfObservations", default: 0,                                                       null: false
   end
 
   add_foreign_key "BusRouteSequences", "\"BusStops\"", column: "busStopLBSLCode", primary_key: "lbslCode", name: "fk_busStop", on_update: :cascade, on_delete: :restrict

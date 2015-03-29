@@ -7,3 +7,13 @@
         <a id="fast" href="#" onclick="setSpeed(4)">Very Fast</a>
     </div>
 </div>
+<script type="text/javascript">
+    function setSpeed(speed) {
+        new $.ajax('/main/speed', {
+            method: 'get',
+            data: {speed: speed},
+            success: function (result) {
+            }
+        });
+    }
+</script>

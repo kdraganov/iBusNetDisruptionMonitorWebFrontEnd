@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   get 'main/index'
   get 'main/about'
-  get 'main/view'
-  get 'main/hide'
-  get 'main/details'
-  get 'main/comments'
+  get 'disruption/index'
+  get 'disruption/list'
+  get 'disruption/hide'
+  get 'disruption/details'
+  get 'disruption/comments'
+  post 'disruption/comments'
   get 'main/speed'
   get 'history/index'
   get 'history/filter'
@@ -16,7 +18,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'main#index'
+  root 'disruption#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

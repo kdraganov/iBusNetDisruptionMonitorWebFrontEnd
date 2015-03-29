@@ -48,5 +48,5 @@ gem 'foundation-rails'
 gem 'activerecord-import'
 gem 'will_paginate', '~> 3.0.6'
 
-gem 'googlecharts'
+# gem 'googlecharts'
 # gem 'mattetti-googlecharts', source: " http://gems.github.com/"

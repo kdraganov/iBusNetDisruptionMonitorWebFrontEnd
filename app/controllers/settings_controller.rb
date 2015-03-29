@@ -12,17 +12,21 @@ class SettingsController < ApplicationController
   def save
     if (params[:key] != nil)
       config = EngineConfiguration.find_by_key(params[:key])
-      config.value = params[:value]
-      config.save
-      render :json => ActiveSupport::JSON.encode({:error => false, :newValue => config.value, :key => params[:key]})
+      if config.editable
+        config.value = params[:value]
+        config.save
+        result = {:error => false, :newValue => config.value, :key => params[:key]}
+      else
+        result = {:error => true, :errorText => "Field is not editable."}
+      end
     else
-      render :json => ActiveSupport::JSON.encode({:error => true, :errorText => "Some error occured."})
+      result ={:error => true, :errorText => "Some error occured."}
     end
-
+    render :json => ActiveSupport::JSON.encode(result)
   end
 
   def index
-    configs = EngineConfiguration.all
+    configs = EngineConfiguration.all.order(key: :desc)
     @configs = configs.paginate(:page => params[:page], :per_page => 20)
   end
 
