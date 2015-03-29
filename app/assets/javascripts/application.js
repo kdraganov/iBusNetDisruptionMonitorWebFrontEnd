@@ -20,7 +20,8 @@ $(function () {
     $(document).foundation();
 });
 
-google.load('visualization', '1', {packages: ['corechart', 'line']});
+//google.load('visualization', '1', {packages: ['corechart', 'line']});
+google.load('visualization', '1', {packages: ['corechart']});
 
 function details(id) {
     new $.ajax('/disruption/details', {
@@ -45,12 +46,22 @@ function drawGraph(dataArray, title, hAxisTitle) {
 //            curveType: 'function',
         width: 960,
         height: 600,
-        'pointSize': 7,
-        lineWidth: 4,
-        selectionMode: 'multiple',
+        'pointSize': 0,
+        lineWidth: 2,
+        selectionMode: 'single',
+        seriesType: "bars",
+        bar: {groupWidth: "90%"},
         series: {
-            0: {color: '#CC0033'},
-            1: {color: '#000000'}
+            0: {
+                color: '#CC0033',
+                type: "bars",
+                targetAxisIndex: 0
+            },
+            1: {
+                color: '#000000',
+                type: "line",
+                targetAxisIndex: 1
+            }
         },
         legend: {
             position: 'right',
@@ -61,15 +72,46 @@ function drawGraph(dataArray, title, hAxisTitle) {
             title: hAxisTitle,
             slantedText: false
         },
-        vAxis: {
-            title: 'Lost time (minutes)',
-            viewWindowMode: 'explicit',
-            viewWindow: {
-                max: 80,
-                min: 0
+        vAxes: {
+            0: {
+                title: 'Lost times (minutes)',
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    max: 60,
+                    min: 0
+                },
+                gridlines: {
+                    count: 12
+                }
             },
-            gridlines: {
-                count: 8
+            1: {
+                title: 'Total lost time (minutes)',
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    max: 120,
+                    min: 0
+                },
+                gridlines: {
+                    color: 'none'
+                }
+            }
+        },
+        annotations: {
+            alwaysOutside: true,
+            textStyle: {
+                fontSize: 12,
+                auraColor: 'none',
+                color: '#555'
+            },
+            boxStyle: {
+                stroke: '#ccc',
+                strokeWidth: 1,
+                gradient: {
+                    color1: '#f3e5f5',
+                    color2: '#f3e5f5',
+                    x1: '0%', y1: '0%',
+                    x2: '100%', y2: '100%'
+                }
             }
         },
         colors: ['#a52714', '#097138'],
@@ -83,6 +125,21 @@ function drawGraph(dataArray, title, hAxisTitle) {
 //                1: {type: 'linear', color: '#111', opacity: .3}
 //            }
     };
-    var chart = new google.visualization.LineChart(document.getElementById('lineGraph'));
+    var chart = new google.visualization.ComboChart(document.getElementById('lineGraph'));
     chart.draw(data, options);
+}
+
+function addNewComment() {
+    new $.ajax('/disruption/addComment', {
+        method: 'post',
+        data: {id: $('#commentId').val(), comment: $('#commentText').val()},
+        success: function (result) {
+            if (!result.error) {
+                $('#revealModal').html(result.partial)
+            } else {
+                $('#revealModal').html(resul.message)
+            }
+        }
+    });
+
 }

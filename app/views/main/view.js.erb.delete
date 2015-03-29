@@ -1,4 +1,0 @@
-if (document.URL == "http://localhost:3000/main/index" || document.URL == "http://localhost:3000/") {
-    $("#lastUpdateTime").html("<%= Time.new.strftime("%m/%d/%Y %H:%M:%S ")%>")
-    poll("<%= @version %>");
-}

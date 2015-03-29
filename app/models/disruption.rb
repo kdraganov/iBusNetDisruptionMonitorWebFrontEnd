@@ -2,7 +2,7 @@ class Disruption < ActiveRecord::Base
   self.table_name = "Disruptions"
   has_one :fromStop, :class_name => "BusStop", :foreign_key => "lbslCode", :primary_key => "fromStopLBSLCode"
   has_one :toStop, :class_name => "BusStop", :foreign_key => "lbslCode", :primary_key => "toStopLBSLCode"
-  has_many :comments, :class_name => "DisruptionComments", :foreign_key => "disruptionId", :primary_key => "id"
+  has_many :comments, :class_name => "DisruptionComment", :foreign_key => "disruptionId", :primary_key => "id"
 
   require 'time'
   TIME_FORMAT = "%m/%d/%Y %H:%M:%S"
