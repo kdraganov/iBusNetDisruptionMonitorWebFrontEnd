@@ -13,7 +13,7 @@ Rails.application.config.assets.precompile += %w( outbound.png )
 Rails.application.config.assets.precompile += %w( details.png )
 Rails.application.config.assets.precompile += %w( comments.png )
 Rails.application.config.assets.precompile += %w( edit.png )
-
+Rails.application.config.assets.precompile += %w( broom.png )
 Rails.application.config.assets.precompile += %w( down_arrow.gif )
 Rails.application.config.assets.precompile += %w( up_arrow.gif )
 # Add additional assets to the asset load path
