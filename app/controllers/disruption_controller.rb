@@ -1,5 +1,29 @@
 class DisruptionController < ApplicationController
+  helper_method :sort_column, :sort_direction
+  before_filter :authenticateUser, :only => [:addComment, :hide]
   require 'time'
+  $disruptionListLatUpdateTime = nil
+
+  def hide
+    id = nil
+    begin
+      id = Integer(params[:id])
+    rescue ArgumentError
+      render :json => ActiveSupport::JSON.encode({:error => true, :errorInfo => "Invalid disruption selected!"}) and return
+    end
+    begin
+      disruption = Disruption.find(id)
+    rescue ActiveRecord::RecordNotFound
+      render :json => ActiveSupport::JSON.encode({:error => true, :errorInfo => "Invalid disruption selected!"}) and return
+    end
+    if (disruption == nil)
+      render :json => ActiveSupport::JSON.encode({:error => true, :errorInfo => "Invalid disruption selected!"}) and return
+    end
+    disruption.hide = !disruption.hide
+    disruption.save
+    $disruptionListLatUpdateTime = DateTime.now
+    list and return
+  end
 
   def addComment
     id = nil
@@ -18,10 +42,13 @@ class DisruptionController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render :json => ActiveSupport::JSON.encode({:error => true, :message => "Invalid disruption."}) and return
     end
+    if (disruption == nil)
+      render :json => ActiveSupport::JSON.encode({:error => true, :message => "Invalid disruption."}) and return
+    end
     comment = DisruptionComment.new
     comment.disruptionId = disruption.id
     comment.comment = commentText
-    comment.operatorId = 5
+    comment.operatorId = session[:operatorId]
     comment.save
     @disruption = Disruption.includes(:comments).find(id)
     @return = {:error => false, :partial => render_to_string(:partial => "comments")}
@@ -44,6 +71,9 @@ class DisruptionController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render text: error and return
     end
+    if (@disruption == nil)
+      render text: error and return
+    end
     render partial: "comments"
   end
 
@@ -62,6 +92,9 @@ class DisruptionController < ApplicationController
     begin
       @disruption = Disruption.includes(:fromStop, :toStop).find(id)
     rescue ActiveRecord::RecordNotFound
+      render text: error and return
+    end
+    if (@disruption == nil)
       render text: error and return
     end
     @sections = Section.includes(:startStop, :endStop, :latestLostTime).where("route = ? AND run = ? ", @disruption.route, @disruption.run).order(sequence: :asc)
@@ -106,20 +139,15 @@ class DisruptionController < ApplicationController
   end
 
   def list
-    if (params[:lastUpdateTime])
-      begin
-        clientLastUpdateTime = DateTime.parse(params[:lastUpdateTime]).to_i
-      rescue ArgumentError
-        clientLastUpdateTime = nil
-      end
-    end
-    lastUpdateTime = formatDatetimeString(getLatUpdateTime)
-    if (clientLastUpdateTime == nil || clientLastUpdateTime< DateTime.parse(lastUpdateTime).to_i)
-      @lastUpdateTime = lastUpdateTime
+    lastUpdateTime = getLatUpdateTime
+    hidden = $disruptionListLatUpdateTime != nil && session[:disruptionListLatUpdateTime] <= $disruptionListLatUpdateTime
+    dbUpdated = session[:fileVersion] == nil || session[:fileVersion] < lastUpdateTime
+    if (hidden || dbUpdated || params[:sort])
+      @lastUpdateTime = formatDatetimeString(lastUpdateTime)
       @disruptions = getDisruptions
-      @return = {:error => false, :update => true, :partial => render_to_string(:partial => "list"), :lastUpdateTime => lastUpdateTime, :timeout => TIMEOUT}
+      @return = {:error => false, :update => true, :partial => render_to_string(:partial => "list"), :lastUpdateTime => formatDatetimeString(lastUpdateTime), :timeout => TIMEOUT}
     else
-      @return = {:error => false, :update => false, :lastUpdateTime => lastUpdateTime, :timeout => TIMEOUT}
+      @return = {:error => false, :update => false, :lastUpdateTime => formatDatetimeString(lastUpdateTime), :timeout => TIMEOUT}
     end
     render :json => ActiveSupport::JSON.encode(@return)
   end
@@ -135,23 +163,32 @@ class DisruptionController < ApplicationController
   TIME_FORMAT = "%Y/%m/%d %H:%M:%S"
 
   def getLatUpdateTime
-    return EngineConfiguration.find("latestFeedTime").value
+    return Time.strptime(EngineConfiguration.find("latestFeedTime").value, TIME_FORMAT)
   end
 
   def getDisruptions
-    disruptions = Disruption.includes(:fromStop, :toStop).where("\"clearedAt\" IS NULL AND NOT \"hide\"").order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
-    # disruptions = Disruption.includes(:fromStop, :toStop).order(delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc)
+    session[:disruptionListLatUpdateTime] = DateTime.now.in_time_zone('London')
+    session[:fileVersion] = getLatUpdateTime
+    whereClause = "\"clearedAt\" IS NULL"
+    order = {hide: :asc, delayInSeconds: :desc, routeTotalDelayInSeconds: :desc, firstDetectedAt: :desc}
+    if session[:operatorId] == nil
+      whereClause += " AND NOT \"hide\""
+      order.drop(1)
+    end
+    if sort_column != false && sort_direction != false
+      order = "\""+sort_column + "\" " + sort_direction
+    end
+    disruptions = Disruption.includes(:fromStop, :toStop).where(whereClause).order(order)
     return disruptions.paginate(:page => params[:page], :per_page => 20)
   end
 
   def formatDatetimeString(timeString)
-    return Time.strptime(timeString, TIME_FORMAT).strftime("%H:%M:%S %d/%m/%Y")
+    return timeString.strftime("%H:%M:%S %d/%m/%Y")
   end
 
   def capitalizeAll(string)
     return string.split.map(&:capitalize).join(' ')
   end
-
 
   def getURLToBusStop(busStop)
     if (busStop.instance_of?(BusStop))
@@ -165,6 +202,20 @@ class DisruptionController < ApplicationController
       return '<a href="'+getURLToBusStop(busStop) + '" target="_blank">' + capitalizeAll(busStop.name) + '</a>'
     end
     return 'Undefined'
+  end
+
+  def sort_column
+    if params[:sort]
+      session[:sort] = params[:sort]
+    end
+    Disruption.column_names.include?(session[:sort]) ? session[:sort] : false
+  end
+
+  def sort_direction
+    if params[:direction]
+      session[:direction] = params[:direction]
+    end
+    %w[asc desc].include?(session[:direction]) ? session[:direction] : false
   end
 
 end

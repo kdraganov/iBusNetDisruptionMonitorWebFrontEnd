@@ -17,14 +17,16 @@
         <% end %>
     </div>
 </fieldset>
-<div class="row" style="margin-top: 0.3em;">
-    <form>
-        <fieldset>
-            <legend>New comment</legend>
-            <textarea id="commentText" name="comment" placeholder="Type in your comment here..." rows="4"/>
-            <input id="commentId" type="hidden" value="<%= @disruption.id %>"/>
-            <a class="button radius small right" onclick="addNewComment()">Add</a>
-        </fieldset>
-    </form>
-</div>
+<% if (session[:operatorId] != nil) %>
+    <div class="row" style="margin-top: 0.3em;">
+        <form>
+            <fieldset>
+                <legend>New comment</legend>
+                <textarea id="commentText" name="comment" placeholder="Type in your comment here..." rows="4"/>
+                <input id="commentId" type="hidden" value="<%= @disruption.id %>"/>
+                <a class="button radius small right" onclick="addNewComment()">Add</a>
+            </fieldset>
+        </form>
+    </div>
+<% end %>
 <a class="close-reveal-modal">&#215;</a>

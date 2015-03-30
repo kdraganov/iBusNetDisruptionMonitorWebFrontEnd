@@ -1,9 +1,32 @@
 class MainController < ApplicationController
+  before_filter :saveLoginState, :only => [:login]
+
   SPEED_PAUSED = 0
   SPEED_SLOW = 1
   SPEED_NORMAL = 2
   SPEED_FAST = 3
   SPEED_VERY_FAST = 4
+
+  def login
+    operator = Operator.authenticate(params[:username], params[:password])
+    if operator
+      session[:operatorId] = operator.id
+      session[:operatorUsername] = operator.username
+      session[:operatorAdmin] = operator.admin
+      flash[:success] = "Welcome again, you are logged in as #{operator.username}."
+    else
+      flash[:alert] = "Invalid Username or Password!"
+    end
+    redirect_to disruption_index_url, status: 301
+  end
+
+  def logout
+    session[:operatorId] = nil
+    session[:operatorUsername] = nil
+    session[:operatorAdmin] = false
+    flash[:success] = "You logged out successfully."
+    redirect_to disruption_index_url, status: 301
+  end
 
   def index
     redirect_to disruption_index_url, status: 301

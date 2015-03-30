@@ -14,19 +14,18 @@
 </div>
 
 <script type="text/javascript">
-    function poll(version, timeout) {
+    function poll(timeout) {
         setTimeout(function () {
             if ($("#disruptionList") != null) {
-                ajaxPollCall(version);
+                ajaxPollCall();
             }
         }, timeout);
     }
 
-    function ajaxPollCall(lastUpdateTime) {
+    function ajaxPollCall() {
         if (document.URL == "<%= request.protocol + request.host%>" + ":3000/disruption/index" || document.URL == "<%= request.protocol + request.host%>" + ":3000/") {
             new $.ajax('/disruption/list', {
                 method: 'get',
-                data: {lastUpdateTime: lastUpdateTime},
                 success: function (result) {
                     if (result.update) {
                         $("#disruptionList").html(result.partial);
@@ -34,7 +33,7 @@
                     } else {
                         $("#lastUpdateTime").html(result.lastUpdateTime)
                     }
-                    poll(result.lastUpdateTime, result.timeout)
+                    poll(result.timeout)
                 }
             });
         }
@@ -43,4 +42,19 @@
     $(document).ready(function () {
         poll("<%= @lastUpdateTime %>", <%= @timeout %>);
     });
+
+    function sort(column, direction){
+        new $.ajax('/disruption/list', {
+            method: 'get',
+            data: {sort: column, direction: direction},
+            success: function (result) {
+                if (result.update) {
+                    $("#disruptionList").html(result.partial);
+                } else {
+                    $("#lastUpdateTime").html(result.lastUpdateTime)
+                }
+                $(document).foundation('tooltip', 'reflow');
+            }
+        });
+    }
 </script>

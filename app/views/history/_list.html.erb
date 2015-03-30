@@ -8,30 +8,48 @@
 
 <div class="row">
     <div class="large-12 columns">
-        <table id="disruptionsTable" class="sortable" width="100%">
+        <table id="disruptionsTable" width="100%">
             <thead>
             <tr>
-                <th width="20">Route</th>
-                <th>Direction</th>
+                <th width="20"><%= sortable("route", "Route").html_safe %></th>
+                <th><%= sortable("run", "Direction").html_safe %></th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">From</span>
-                </th>
-                <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stops between which disruption is observed.">To</span>
-                </th>
-                <th width="105">
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed accross the given section.">Delay</span>
-                </th>
-                <th width="105">
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in minutes.">Total delay</span>
+                    <%= sortable("fromStopLBSLCode", "From").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>from</strong> which disruption is observed.">
+                               <sup>*</sup>
+                    </span>
                 </th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">Detected</span>
+                    <%= sortable("toStopLBSLCode", "To").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>to</strong> which disruption is observed.">
+                           <sup>*</sup>
+                    </span>
+                </th>
+                <th width="110">
+                    <%= sortable("delayInSeconds", "Delay").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed across the given section(in minutes).">
+                         <sup>*</sup>
+                    </span>
+                </th>
+                <th width="110">
+                    <%= sortable("routeTotalDelayInSeconds", "Total delay").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in the given direction(in minutes).">
+                        <sup>*</sup>
+                    </span>
                 </th>
                 <th>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when disruption was no longer detected by the system.">Cleared</span>
+                    <%= sortable("firstDetectedAt", "Detected").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">
+                         <sup>*</sup>
+                    </span>
                 </th>
-                <th class="sorttable_nosort" width="80">Actions</th>
+                <th>
+                    <%= sortable("clearedAt", "Cleared").html_safe %>
+                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when disruption was no longer detected by the system.">
+                           <sup>*</sup>
+                    </span>
+                </th>
+                <th width="100" style="text-align: center;" width="80">Actions</th>
             </tr>
             </thead>
             <tbody>

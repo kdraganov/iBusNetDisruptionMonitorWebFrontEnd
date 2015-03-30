@@ -1,4 +1,5 @@
 class SettingsController < ApplicationController
+  before_filter :authenticateUser, :only => [:edit, :save, :index]
 
   def edit
     if (params[:id] != nil)

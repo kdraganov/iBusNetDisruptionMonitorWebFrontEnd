@@ -1,15 +1,17 @@
-<div id="loginModal" class="reveal-modal" data-reveal>
-    <form>
-        <fieldset>
-            <legend><h2>Login</h2></legend>
-            <label>Username
-                <input type="text" placeholder="Enter your username or email">
-            </label>
-            <label>Password
-                <input type="password" placeholder="Enter your password">
-            </label>
-            <a href="settings.html" class="button round expand">Login</a>
-        </fieldset>
-    </form>
+<div id="loginModal" class="reveal-modal large" data-reveal style="max-width: 600px;">
+    <div class="row">
+        <div class="small-12 medium-12 large-12 small-centered medium-centered large-centered columns">
+            <fieldset>
+                <legend><h2>Login</h2></legend>
+                <%= form_tag(:action => 'login', :controller => 'main') do %>
+                    <label>Username<%= text_field_tag(:username) %>
+                    </label>
+                    <label>Password<%= password_field_tag :password %>
+                    </label>
+                    <%= submit_tag("Log in", class: "button radius expand") %>
+                <% end %>
+            </fieldset>
+        </div>
+    </div>
     <a class="close-reveal-modal">&#215;</a>
 </div>

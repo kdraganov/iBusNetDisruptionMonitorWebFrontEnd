@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'main/about'
   get 'disruption/index'
   get 'disruption/list'
-  get 'disruption/hide'
+  post 'disruption/hide'
   get 'disruption/details'
   get 'disruption/comments'
   get 'main/speed'
@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'settings/edit'
   post 'settings/save'
   post 'disruption/addComment'
+  post 'main/login'
+  get 'main/logout'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -135,11 +135,42 @@ function addNewComment() {
         data: {id: $('#commentId').val(), comment: $('#commentText').val()},
         success: function (result) {
             if (!result.error) {
-                $('#revealModal').html(result.partial)
+                $('#revealModal').html(result.partial);
+                window.scrollTo(0, 0);
             } else {
-                $('#revealModal').html(resul.message)
+                $('#revealModal').html(result.message);
+            }
+        }
+    });
+}
+
+function hideDisruption(id, hidden) {
+    if (hidden) {
+        if (!confirm("Are you sure you want to show this disruption?")) {
+            return false;
+        }
+    } else {
+        if (!confirm("Are you sure you want to hide this disruption?")) {
+            return false;
+        }
+    }
+    new $.ajax('/disruption/hide', {
+        method: 'post',
+        data: {id: id},
+        success: function (result) {
+            if (!result.error) {
+                $("#disruptionList").html(result.partial);
+                showAlert("Disruption hidden successfully!", "success");
+            } else {
+                showAlert(result.errorInfo, "alert");
             }
         }
     });
 
+}
+
+function showAlert(content, type) {
+    alert = "<div data-alert class=\"alert-box " + type + " radius text-center\"><strong>" + content + "</strong> <a href=\"#\" class=\"close\">&times;</a> </div>";
+    $("#flashDiv").html(alert);
+    $(document).foundation('alert', 'reflow');
 }

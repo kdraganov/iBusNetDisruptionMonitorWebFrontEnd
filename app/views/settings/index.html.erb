@@ -53,6 +53,7 @@
                 if (!result.error) {
                     $('#revealModal').foundation('reveal', 'close');
                     document.getElementById(result.key).innerHTML = result.newValue;
+                    showAlert("Value changed successfully!", "success")
                 }
             }
         });

@@ -15,6 +15,29 @@
  *= require foundation_and_overrides
 
  */
+
+#disruptionsTable th a{
+    color: #333333;
+}
+
+#disruptionsTable th .current {
+    padding-right: 12px;
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+#disruptionsTable th .asc {
+    background-image: url(/images/up_arrow.gif);
+}
+
+#disruptionsTable th .desc {
+    background-image: url(/images/down_arrow.gif);
+}
+
+table tr.hidden {
+    opacity: 0.3;
+}
+
 .row.fullWidth {
     width: 100%;
     margin-left: auto;
@@ -26,7 +49,7 @@
     position: fixed;
 }
 
-.trendCell{
+.trendCell {
     font-size: 1.4em;
     font-weight: bold;
     text-align: center;
@@ -64,20 +87,25 @@
 
 .delayCell.severe {
     background: rgba(204, 51, 51, 1);
-    color:#fff;
+    color: #fff;
 }
-
 
 .apple_pagination {
     background: #f1f1f1;
     border: 1px solid #e5e5e5;
     text-align: center;
     padding: 0.2em;
-    cursor: default; }
+    cursor: default;
+}
+
 .apple_pagination a, .apple_pagination span {
-    padding: 0.2em 0.3em; }
+    padding: 0.2em 0.3em;
+}
+
 .apple_pagination .disabled {
-    color: #aaaaaa; }
+    color: #aaaaaa;
+}
+
 .apple_pagination .current {
     font-style: normal;
     font-weight: bold;
@@ -89,9 +117,14 @@
     -moz-border-radius: 1em;
     -webkit-border-radius: 1em;
     border-radius: 1em;
-    text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px; }
+    text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+}
+
 .apple_pagination a {
     text-decoration: none;
-    color: black; }
+    color: black;
+}
+
 .apple_pagination a:hover, .apple_pagination a:focus {
-    text-decoration: underline; }
+    text-decoration: underline;
+}
