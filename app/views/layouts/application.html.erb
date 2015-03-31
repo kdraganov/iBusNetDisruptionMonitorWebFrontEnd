@@ -3,15 +3,12 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+    <%= favicon_link_tag 'favicon.ico' %>
     <title>iBus Disruption Monitor</title>
-
     <%= stylesheet_link_tag "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
     <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
-
     <%= content_for :header %>
-
     <%= csrf_meta_tags %>
 </head>
 
@@ -36,18 +33,10 @@
                         <% if (session[:operatorId] != nil && session[:operatorAdmin]) %>
                             <li class="<%= "active" if params[:controller] == "settings" %>"><%= link_to "Settings", controller: "settings", action: "index" %></li>
                         <% end %>
-                        <!--
-                        <li class="has-dropdown">
-                             <a href="#">SettingsController</a>
-                             <ul class="dropdown">
-                                 <li><a href="#" data-reveal-id="loginModal">General</a></li>
-                                 <li><a href="#" data-reveal-id="loginModal">User specific</a></li>
-                             </ul>
-                         </li>
-                         -->
                         <li class="<%= "active" if params[:controller] == "main" %>"><%= link_to "About", controller: "main", action: "about" %></li>
                         <% if (session[:operatorId] != nil) %>
-                            <li><a href="<%= main_logout_url %>">Log out (<strong><%=session[:operatorUsername]%></strong>)</a></li>
+                            <li><a href="<%= main_logout_url %>">Log out
+                                (<strong><%= session[:operatorUsername] %></strong>)</a></li>
                         <% else %>
                             <li><a href="#" data-reveal-id="loginModal">Log in</a></li>
                         <% end %>
@@ -101,7 +90,9 @@
     </div>
 </footer>
 <!--END:Footer-->
-<%= render 'layouts/loginModal' %>
+<% if (session[:operatorId] == nil) %>
+    <%= render 'layouts/loginModal' %>
+<% end %>
 <%= render 'layouts/termsModal' %>
 <%= render 'layouts/privacyModal' %>
 </body>

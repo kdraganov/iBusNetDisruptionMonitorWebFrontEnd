@@ -3,14 +3,16 @@ class HistoryController < ApplicationController
 
   def filter
     checkParams
-    @disruptions = getDisruptions(session[:fromFilter],  session[:toFilter])
+    @disruptions = getDisruptions(session[:fromFilter], session[:toFilter])
     render partial: 'list'
   end
 
   def index
     checkParams
-    @disruptions = getDisruptions(session[:fromFilter],  session[:toFilter])
+    @disruptions = getDisruptions(session[:fromFilter], session[:toFilter])
   end
+
+  private
 
   def getDisruptions(fromDate, toDate)
     if (toDate)
@@ -30,10 +32,8 @@ class HistoryController < ApplicationController
     end
 
     whereClause = nil
-    # where("\"clearedAt\" IS NULL AND NOT \"hide\"")
     if (to != nil && from != nil)
       whereClause = "\"firstDetectedAt\" >= '"+ getFormatForDB(from)+ "' AND \"firstDetectedAt\" <= '"+getFormatForDB(to)+"'"
-      # whereClause = "\"firstDetectedAt\" >= '"+ getFormatForDB(from)+ "' OR \"clearedAt\" <= '"+getFormatForDB(to)+"'"
     elsif (to != nil)
       whereClause = "\"firstDetectedAt\" <= '"+ getFormatForDB(to)+"'"
     elsif (from != nil)
@@ -58,7 +58,6 @@ class HistoryController < ApplicationController
     return time.strftime("%Y-%m-%d %H:%M:%S")
   end
 
-  private
 
   def sort_column
     Disruption.column_names.include?(session[:sort]) ? session[:sort] : false

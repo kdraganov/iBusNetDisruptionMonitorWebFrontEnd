@@ -86,7 +86,7 @@
         </table>
         <% if @disruptions.total_entries > 20 %>
             <div class="apple_pagination">
-                <%= will_paginate @disruptions, :container => false %>
+                <%= will_paginate @disruptions, :container => false, :params => {:controller => "history", :action => "index"} %>
             </div>
         <% end %>
     </div>

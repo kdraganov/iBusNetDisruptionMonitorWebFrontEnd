@@ -12,7 +12,7 @@
         </div>
     </div>
 </div>
-<!--
+<!--TODO:REMOVE - Just for debugging purposes -->
 <div class="row" style="margin-top: 0.3em;">
     <div class="large-12 columns">
         <div style="text-align: center">
@@ -26,21 +26,19 @@
                 <th>#Observations</th>
                 </thead>
                 <tbody>
-                < @sections.each do |section| %>
-                    < #if (@xaxisLabels.include? section.sequence)      %>
+                <% @sections.each do |section| %>
                     <tr>
-                        <td> <= section.sequence %></td>
-                        <td>  <= getLinkToBusStop(section.startStop).html_safe %></td>
-                        <td>  <= getLinkToBusStop(section.endStop).html_safe %></td>
-                        <td> <= secondsToMinutes(section.latestLostTime.lostTimeInSeconds) %></td>
-                        <td> <= section.latestLostTime.numberOfObservations %></td>
+                        <td> <%= section.sequence %></td>
+                        <td>  <%= getLinkToBusStop(section.startStop).html_safe %></td>
+                        <td>  <%= getLinkToBusStop(section.endStop).html_safe %></td>
+                        <td> <%= secondsToMinutes(section.latestLostTime.lostTimeInSeconds) %></td>
+                        <td> <%= section.latestLostTime.numberOfObservations %></td>
                     </tr>
-                    < #end      %>
-                < end %>
+                <% end %>
                 </tbody>
             </table>
         </div>
     </div>
-</div>-->
-<!--<a href="<= @chart %>">chart</a> -->
+</div>
+<!--END TODO-->
 <a class="close-reveal-modal">&#215;</a>
