@@ -65,12 +65,11 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   create_table "Sections", force: :cascade do |t|
-    t.string   "route",                    limit: 10
-    t.integer  "run",                      limit: 2
-    t.string   "startStopLBSLCode",        limit: 10
-    t.string   "endStopLBSLCode",          limit: 10
-    t.integer  "sequence",                 limit: 2
-    t.datetime "latestLostTimeUpdateTime"
+    t.string  "route",             limit: 10
+    t.integer "run",               limit: 2
+    t.string  "startStopLBSLCode", limit: 10
+    t.string  "endStopLBSLCode",   limit: 10
+    t.integer "sequence",          limit: 2
   end
 
   create_table "SectionsLostTime", primary_key: "serialId", force: :cascade do |t|

@@ -18,7 +18,7 @@
             <thead>
             <tr>
                 <th width="20"><%= sortable("route", "Route").html_safe %></th>
-                <th><%= sortable("run", "Direction").html_safe %></th>
+                <th width="20"><%= sortable("run", "Direction").html_safe %></th>
                 <th>
                     <%= sortable("fromStopLBSLCode", "From").html_safe %>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>from</strong> which disruption is observed.">
@@ -43,13 +43,13 @@
                         <sup>*</sup>
                     </span>
                 </th>
-                <th>
+                <th width="70">
                     <%= sortable("trend", "Trend").html_safe %>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="If disruption is worsening (<span style=color:#FF5468;>&#8593;</span>) and if it is improving (<span style=color:#4DFA90;>&#8595;</span>) else (<span style=color:#FABE4D;>&#8597;</span>).">
                            <sup>*</sup>
                     </span>
                 </th>
-                <th>
+                <th width="110">
                     <%= sortable("firstDetectedAt", "Detected").html_safe %>
                     <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">
                          <sup>*</sup>

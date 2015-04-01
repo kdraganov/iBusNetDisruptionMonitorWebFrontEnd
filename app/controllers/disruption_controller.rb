@@ -24,20 +24,12 @@ class DisruptionController < ApplicationController
     if (@disruption == nil)
       render text: error and return
     end
-    if (@disruption.clearedAt == nil)
-      @sections = Section.find_by_sql(['SELECT * FROM (
-SELECT s.*, "SectionsLostTime".*,ROW_NUMBER() OVER(PARTITION BY s.id ORDER BY "SectionsLostTime".timestamp DESC) rn
-FROM "SectionsLostTime" JOIN "Sections" s ON "SectionsLostTime"."sectionId" = s.id
-WHERE s."route" = ? AND s.run = ? AND "SectionsLostTime".timestamp <= s."latestLostTimeUpdateTime" )
-a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run])
-      # @sections = Section.includes(:startStop, :endStop, :latestLostTime).where("route = ? AND run = ? ", @disruption.route, @disruption.run).order(sequence: :asc)
-    else
-      @sections = Section.find_by_sql(['SELECT * FROM (
+    # @sections = Section.includes(:startStop, :endStop, :latestLostTime).where("route = ? AND run = ? ", @disruption.route, @disruption.run).order(sequence: :asc)
+    @sections = Section.find_by_sql(['SELECT * FROM (
 SELECT s.*, "SectionsLostTime".*,ROW_NUMBER() OVER(PARTITION BY s.id ORDER BY "SectionsLostTime".timestamp DESC) rn
 FROM "SectionsLostTime" JOIN "Sections" s ON "SectionsLostTime"."sectionId" = s.id
 WHERE s."route" = ? AND s.run = ? AND "SectionsLostTime".timestamp <= ? )
-a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disruption.clearedAt])
-    end
+a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disruption.clearedAt == nil ? Time.now : @disruption.clearedAt])
     ActiveRecord::Associations::Preloader.new.preload(@sections, [:startStop, :endStop, :latestLostTime])
 
     startIndex = Section.where("route = ? AND run = ? AND \"startStopLBSLCode\" = ?", @disruption.route, @disruption.run, @disruption.fromStopLBSLCode)[0].sequence
@@ -60,6 +52,7 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
         label = ''
       end
       lostTime = (section.latestLostTime.lostTimeInSeconds / 60).round
+      lostTime = [lostTime, 0].max
       totalLostTime += lostTime
 
       tooltip = "From: <strong>"+getLinkToBusStop(section.startStop)+
@@ -174,7 +167,7 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
   end
 
   private
-  TIMEOUT = 5000
+  TIMEOUT = 1000
   TIME_FORMAT = "%Y/%m/%d %H:%M:%S"
 
   def getLatUpdateTime
