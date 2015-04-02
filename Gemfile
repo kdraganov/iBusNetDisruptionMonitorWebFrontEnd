@@ -44,9 +44,15 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'coffee-script-source', '1.8.0'
+
+# http://foundation.zurb.com/docs/applications.html
 gem 'foundation-rails'
-gem 'activerecord-import'
+
+# https://github.com/zdennis/activerecord-import
+# gem 'activerecord-import'
+
+# https://github.com/mislav/will_paginate
 gem 'will_paginate', '~> 3.0.6'
 
-# gem 'googlecharts'
-# gem 'mattetti-googlecharts', source: " http://gems.github.com/"
+# https://github.com/kossnocorp/jquery.turbolinks
+gem 'jquery-turbolinks'

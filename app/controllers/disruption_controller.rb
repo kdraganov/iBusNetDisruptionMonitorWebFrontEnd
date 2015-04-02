@@ -39,11 +39,9 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
                {type: 'string', role: 'tooltip', p: {html: true}}, {type: 'boolean', role: 'scope'},
                'Total Lost Time', {type: 'string', role: 'tooltip', p: {html: true}}, {type: 'boolean', role: 'scope'}])
     totalLostTime = 0
+    sectionLostTime = 0
     @sections.each do |section|
       scope = false
-      if (section.sequence >= startIndex && section.sequence < endIndex)
-        scope = true
-      end
       if (section.sequence == 1)
         label = capitalizeAll(section.startStop.name)
       elsif (section.sequence == @sections.length)
@@ -54,6 +52,11 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
       lostTime = (section.latestLostTime.lostTimeInSeconds / 60).round
       lostTime = [lostTime, 0].max
       totalLostTime += lostTime
+
+      if (section.sequence >= startIndex && section.sequence < endIndex)
+        sectionLostTime += lostTime
+        scope = true
+      end
 
       tooltip = "From: <strong>"+getLinkToBusStop(section.startStop)+
           "</strong><br>To: <strong>" +getLinkToBusStop(section.endStop)+
@@ -68,7 +71,7 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
     end
 
     title = 'Route '+@disruption.route+' '+ @disruption.getRunString
-    hAxisTitle = 'Total average disruption observed across route '+@disruption.getTotalDelay.to_s+' minutes'
+    hAxisTitle = 'Total cumulative lost time observed along route '+totalLostTime.to_s+' minutes'
     @return = {:error => false, :update => true, :partial => render_to_string(:partial => "details"), :data => data, :title => title, :hAxisTitle => hAxisTitle}
     render :json => ActiveSupport::JSON.encode(@return)
   end
@@ -167,7 +170,7 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
   end
 
   private
-  TIMEOUT = 1000
+  TIMEOUT = 10000
   TIME_FORMAT = "%Y/%m/%d %H:%M:%S"
 
   def getLatUpdateTime

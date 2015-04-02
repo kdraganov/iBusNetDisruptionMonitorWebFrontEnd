@@ -1,7 +1,7 @@
 <h4>Route <%= getLinkToBusRoute(@disruption.route, @disruption.getRunString).html_safe %>
     disrupted <%= @disruption.getRunString.downcase %>- first detected at  <%= @disruption.getDetectedAt(true) %>
 </h4>
-<h5> Average disruption of <strong><%= @disruption.getDelay %></strong> minutes observed between
+<h5>Average lost time of <strong><%= @disruption.getDelay %></strong> minutes observed between
     <%= getLinkToBusStop(@disruption.fromStop).html_safe %> and
     <%= getLinkToBusStop(@disruption.toStop).html_safe %></h5>
 
@@ -31,7 +31,7 @@
                         <td> <%= section.sequence %></td>
                         <td>  <%= getLinkToBusStop(section.startStop).html_safe %></td>
                         <td>  <%= getLinkToBusStop(section.endStop).html_safe %></td>
-                        <td> <%= secondsToMinutes(section.latestLostTime.lostTimeInSeconds) %></td>
+                        <td> <%= section.latestLostTime.lostTimeInSeconds %></td>
                         <td> <%= section.latestLostTime.numberOfObservations %></td>
                     </tr>
                 <% end %>

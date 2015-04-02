@@ -30,8 +30,6 @@ GEM
       activemodel (= 4.2.0)
       activesupport (= 4.2.0)
       arel (~> 6.0)
-    activerecord-import (0.7.0)
-      activerecord (>= 3.0)
     activesupport (4.2.0)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -72,6 +70,9 @@ GEM
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
+    jquery-turbolinks (2.1.0)
+      railties (>= 3.1.0)
+      turbolinks
     json (1.8.2)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
@@ -157,13 +158,13 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  activerecord-import
   byebug
   coffee-rails (~> 4.1.0)
   coffee-script-source (= 1.8.0)
   foundation-rails
   jbuilder (~> 2.0)
   jquery-rails
+  jquery-turbolinks
   pg
   rails (= 4.2.0)
   sass-rails (~> 5.0)

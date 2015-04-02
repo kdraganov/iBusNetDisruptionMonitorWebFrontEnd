@@ -16,39 +16,27 @@
                 <th width="20"><%= sortable("run", "Direction").html_safe %></th>
                 <th>
                     <%= sortable("fromStopLBSLCode", "From").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>from</strong> which disruption is observed.">
-                               <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>from</strong> which disruption is observed.">*</sup>
                 </th>
                 <th>
                     <%= sortable("toStopLBSLCode", "To").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>to</strong> which disruption is observed.">
-                           <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="Stop <strong>to</strong> which disruption is observed.">*</sup>
                 </th>
                 <th width="110">
                     <%= sortable("delayInSeconds", "Delay").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed across the given section(in minutes).">
-                         <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="WMA (Weighted moving average) delay observed across the given section(in minutes).">*</sup>
                 </th>
                 <th width="110">
                     <%= sortable("routeTotalDelayInSeconds", "Total delay").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in the given direction(in minutes).">
-                        <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="Total delay observed across the route in the given direction(in minutes).">*</sup>
                 </th>
                 <th width="110">
                     <%= sortable("firstDetectedAt", "Detected").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">
-                         <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="Time when the system has first detected the disruption.">*</sup>
                 </th>
                 <th width="110">
                     <%= sortable("clearedAt", "Cleared").html_safe %>
-                    <span data-tooltip aria-haspopup="true" class="has-tip" title="Time when disruption was no longer detected by the system.">
-                           <sup>*</sup>
-                    </span>
+                    <sup data-tooltip aria-haspopup="true" class="has-tip" title="Time when disruption was no longer detected by the system.">*</sup>
                 </th>
                 <th width="100" style="text-align: center;" width="80">Actions</th>
             </tr>
@@ -59,7 +47,9 @@
                     <td>
                         <%= getLinkToBusRoute(disruption.route, disruption.getRunString).html_safe %>
                     </td>
-                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>"> <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString %></td>
+                    <td style="text-align: center;" sorttable_customkey="<%= disruption.run %>">
+                        <%= image_tag disruption.getRunString.downcase+".png", size: "32", title: disruption.getRunString, class: "has-tip", "data-tooltip" => "", "aria-haspopup" => true %>
+                    </td>
                     <td>
                         <%= getLinkToBusStop(disruption.fromStop).html_safe %>
                     </td>
@@ -74,10 +64,10 @@
                     <td style="text-align: center;">
                         <a onclick="details(<%=disruption.id%>)">
                             <!--<a href="<= disruption_details_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">-->
-                            <%= image_tag "details.png", size: "24", alt: "Show more details", title: "Show more details about disruption" %>
+                            <%= image_tag "details.png", size: "24", alt: "Show more details", title: "Show more details about disruption", class: "has-tip", "data-tooltip" => "", "aria-haspopup" => true %>
                         </a>
                         <a href="<%= disruption_comments_url(id: disruption.id) %>" data-reveal-id="revealModal" data-reveal-ajax="true">
-                            <%= image_tag "comments.png", size: "24", alt: "Show comments", title: "Show comments about disruption" %>
+                            <%= image_tag "comments.png", size: "24", alt: "Show comments", title: "Show comments about disruption", class: "has-tip", "data-tooltip" => "", "aria-haspopup" => true %>
                         </a>
                     </td>
                 </tr>

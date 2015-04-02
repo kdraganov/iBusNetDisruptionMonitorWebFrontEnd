@@ -13,10 +13,13 @@
  *= require_tree .
  *= require_self
  *= require foundation_and_overrides
-
  */
 
-#disruptionsTable th a{
+#disruptionsTable .has-tip {
+    border-bottom: none;
+}
+
+#disruptionsTable th a {
     color: #333333;
 }
 
