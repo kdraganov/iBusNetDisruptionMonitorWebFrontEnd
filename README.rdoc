@@ -1,28 +1,22 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+External libraries used:
 
-Things you may want to cover:
+* Foundation for rails https://github.com/zurb/foundation-rails
+* Will Paginate https://github.com/mislav/will_paginate
+* jQuery https://rubygems.org/gems/jquery-rails/versions/4.0.3
+* jQuery turbolinks plugin https://github.com/kossnocorp/jquery.turbolinks
+* jQuery Datetimepicker https://plugins.jquery.com/datetimepicker/
+* Google Charts - jsapi.js https://developers.google.com/chart/
 
-* Ruby version
+The project is build using Ruby 2.1.5 and Rails 4.2.0. Both of which are required to be installed on the system in order to run the application.
 
-* System dependencies
+The database used for the development is PostgreSQL 9.4, however if you wish you can use another database, but this needs to be configure according in
+the config/database.yml file of this project.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
+To run the project you can simply import it into IntelliJ IDEA IDE (https://www.jetbrains.com/ruby/help/importing-project-from-existing-source-code.html)
+and change the database connection settings in config/database.yml
+Once this is done the application can be run with a server of your choice.
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.

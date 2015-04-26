@@ -12,7 +12,7 @@ default: &default
    database: iBusDisruption
    pool: 5
    username: postgres
-   password: 299188
+   password: 
    timeout: 5000
 
 development:
@@ -23,7 +23,7 @@ development:
   database: iBusDisruption
   pool: 5
   username: postgres
-  password: 299188
+  password:
   timeout: 5000
 
 #development:
