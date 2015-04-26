@@ -7,7 +7,6 @@ class Section < ActiveRecord::Base
 
   # has_one :latestLostTime, -> { where("\"SectionsLostTime\".timestamp = (SELECT \"Sections\".\"latestLostTimeUpdateTime\" FROM \"Sections\" WHERE \"SectionsLostTime\".\"sectionId\" = \"Sections\".id)") }, :class_name => "SectionsLostTime", :foreign_key => "sectionId", :primary_key => "id"
 
-
   def getLatestLostTimeMinutes
     return (self.latestLostTime.lostTimeInSeconds / 60).round
   end

@@ -11,7 +11,6 @@ class Disruption < ActiveRecord::Base
   SERIOUS_THRESHOLD = 40
   SEVERE_THRESHOLD = 60
 
-
   RED_COLOR = "#CC3333"
   YELLOW_COLOR = "#FFCC00"
   GREEN_COLOR = "#006633"

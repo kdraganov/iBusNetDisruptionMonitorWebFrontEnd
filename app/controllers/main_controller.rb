@@ -35,6 +35,7 @@ class MainController < ApplicationController
   def about
   end
 
+  #Used for changing the speed for the thread responsible for simulations - TODO: Remove before putting into production
   def speed
     feedThreadPaused = EngineConfiguration.find("feedThreadPaused")
     feedThreadPaused.value = "false"

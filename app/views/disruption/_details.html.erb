@@ -12,33 +12,4 @@
         </div>
     </div>
 </div>
-<!--TODO:REMOVE - Just for debugging purposes -->
-<div class="row" style="margin-top: 0.3em;">
-    <div class="large-12 columns">
-        <div style="text-align: center">
-            Total average disruption observed across route <strong><%= @disruption.getTotalDelay %></strong> minutes
-            <table width="100%">
-                <thead>
-                <th>Sequence</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Lost</th>
-                <th>#Observations</th>
-                </thead>
-                <tbody>
-                <% @sections.each do |section| %>
-                    <tr>
-                        <td> <%= section.sequence %></td>
-                        <td>  <%= getLinkToBusStop(section.startStop).html_safe %></td>
-                        <td>  <%= getLinkToBusStop(section.endStop).html_safe %></td>
-                        <td> <%= section.latestLostTime.lostTimeInSeconds %></td>
-                        <td> <%= section.latestLostTime.numberOfObservations %></td>
-                    </tr>
-                <% end %>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!--END TODO-->
 <a class="close-reveal-modal">&#215;</a>

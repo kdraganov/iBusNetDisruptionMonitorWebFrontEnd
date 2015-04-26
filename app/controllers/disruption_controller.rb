@@ -4,6 +4,7 @@ class DisruptionController < ApplicationController
   require 'time'
   $disruptionListLatUpdateTime = nil
 
+  #Method responsible for querying the database for the details of a given disruption
   def details
     error = "<h1>No disruption specified</h1> <a class=\"close-reveal-modal\">&#215;</a>"
     id = nil
@@ -76,6 +77,7 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
     render :json => ActiveSupport::JSON.encode(@return)
   end
 
+  # Lists all active disruptions in the network
   def list
     lastUpdateTime = getLatUpdateTime
     hidden = $disruptionListLatUpdateTime != nil && session[:disruptionListLatUpdateTime] <= $disruptionListLatUpdateTime
@@ -170,7 +172,8 @@ a WHERE rn = 1 ORDER BY a.sequence', @disruption.route, @disruption.run, @disrup
   end
 
   private
-  TIMEOUT = 10000
+  #Time between each Ajax update call for the disruption list
+  TIMEOUT = 1000
   TIME_FORMAT = "%Y/%m/%d %H:%M:%S"
 
   def getLatUpdateTime

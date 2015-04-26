@@ -24,22 +24,29 @@ $(function () {
 //google.load('visualization', '1', {packages: ['corechart', 'line']});
 google.load('visualization', '1', {packages: ['corechart']});
 
+/**
+ * Executes an AJAX call for showing up the details
+ * @param id
+ */
 function details(id) {
     new $.ajax('/disruption/details', {
         method: 'get',
         data: {id: id},
         success: function (result) {
             $('#revealModal').html(result.partial)
-
             if (!result.error) {
                 drawGraph(result.data, result.title, result.hAxisTitle);
             }
-
             $('#revealModal').foundation('reveal', 'open');
         }
     });
 }
-
+/**
+ * Draws the graph for visualising the lost time along a route
+ * @param dataArray
+ * @param title
+ * @param hAxisTitle
+ */
 function drawGraph(dataArray, title, hAxisTitle) {
     var data = new google.visualization.arrayToDataTable(dataArray);
     var options = {
@@ -129,7 +136,9 @@ function drawGraph(dataArray, title, hAxisTitle) {
     var chart = new google.visualization.ComboChart(document.getElementById('lineGraph'));
     chart.draw(data, options);
 }
-
+/**
+ * Ajax call for adding new comment for a disruption
+ */
 function addNewComment() {
     new $.ajax('/disruption/addComment', {
         method: 'post',
@@ -144,7 +153,12 @@ function addNewComment() {
         }
     });
 }
-
+/**
+ * Hides a disruption via an Ajax call
+ * @param id
+ * @param hidden
+ * @returns {boolean}
+ */
 function hideDisruption(id, hidden) {
     if (hidden) {
         if (!confirm("Are you sure you want to show this disruption?")) {
@@ -169,7 +183,11 @@ function hideDisruption(id, hidden) {
     });
 
 }
-
+/**
+ * Displays a flash alert
+ * @param content
+ * @param type
+ */
 function showAlert(content, type) {
     alert = "<div data-alert class=\"alert-box " + type + " radius text-center\"><strong>" + content + "</strong> <a href=\"#\" class=\"close\">&times;</a> </div>";
     $("#flashDiv").html(alert);

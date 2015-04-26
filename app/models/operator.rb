@@ -13,7 +13,7 @@ class Operator < ActiveRecord::Base
 
   def match_password(logingPassword="")
     return logingPassword == self.password
-    #TODO:Add encryption
+    #TODO:Add encryption before putting into production
     # encrypted_password == BCrypt::Engine.hash_secret(password, salt)
   end
 
